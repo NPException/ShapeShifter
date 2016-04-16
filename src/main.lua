@@ -10,7 +10,7 @@ local  fps, mspf
 
 
 -- LOAD --
-function love.load(arg)
+function love.load( arg )
   globals.debug = false
   globals.config = require("conf")
   globals.time = 0
@@ -18,6 +18,7 @@ function love.load(arg)
   love.graphics.setDefaultFilter("nearest","nearest")
   
   -- load initial game state here
+  globals.state = require("states.menu").new()
 end
 
 
@@ -32,26 +33,30 @@ function love.keypressed( key, scancode, isrepeat )
   end
   
   -- do game keypressed actions here
+  local state = globals.state
+  if (state and state.keypressed) then
+    state.keypressed( key, scancode, isrepeat )
+  end
 end
-
 
 
 function love.mousepressed( x, y, button )
-  -- mouse button actions here
-end
-
-
-
-function love.wheelmoved( dx, dy )
-  -- mouse wheel actions
+  local state = globals.state
+  if (state and state.keypressed) then
+    state.mousepressed( x, y, button )
+  end
 end
 
 
 -- UPDATE --
-function love.update(dt)
+function love.update( dt )
   globals.time = globals.time + dt
   
   -- do game state update here
+  local state = globals.state
+  if (state and state.update) then
+    state.update( dt )
+  end
   
   if (globals.debug) then
     fps = love.timer.getFPS()
@@ -60,10 +65,13 @@ function love.update(dt)
 end
 
 
-
 -- DRAW --
 function love.draw()
   -- do game state draw here
+  local state = globals.state
+  if (state and state.update) then
+    state.update( dt )
+  end
   
   if (globals.debug) then
     love.graphics.setColor(0,0,0,128)
@@ -72,8 +80,4 @@ function love.draw()
     love.graphics.print("FPS:  "..fps, 5,5)
     love.graphics.print("ms/F: "..mspf, 5,20)
   end
-end
-
-function love.resize(w,h)
-  -- if necessary, do resize actions here
 end
