@@ -18,7 +18,8 @@ function love.load( arg )
   love.graphics.setDefaultFilter("nearest","nearest")
   
   -- load initial game state here
-  globals.state = require("states.menu").new()
+  local menuState = require("states.menu").new()
+  globals.state = require("states.fader").fader( menuState, true, 0.5, function() globals.state = menuState end )
 end
 
 
