@@ -1,7 +1,6 @@
 -- global variables
 require("lib.stringfunctions")
 require("loop")
-require("lib.images")
 
 GLOBALS = { debug = false }
 local globals = GLOBALS
