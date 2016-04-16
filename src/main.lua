@@ -27,7 +27,7 @@ function love.load( arg )
   
   -- load initial game state here
   local menuState = require("states.menu").new()
-  globals.state = require("states.fader").fader( menuState, true, 0.5, function() globals.state = menuState end )
+  globals.state = require("states.fader").fader( menuState, true, 1.5, function() globals.state = menuState end, {255,255,255})
 end
 
 
