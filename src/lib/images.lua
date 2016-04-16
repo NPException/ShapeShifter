@@ -15,7 +15,8 @@ end
 -- define image table
 local images = {
     backgrounds = {
-        background_title = loadImage("assets/backgrounds/background_title.png")
+        background_title = loadImage("assets/backgrounds/background_title.png"),
+        background_ph = loadImage("assets/background_placeholder.png")
       },
       cars = {
         car1 = loadImage("assets/cars/car1.png"),
