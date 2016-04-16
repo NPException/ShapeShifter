@@ -5,7 +5,7 @@
 -- shorten love function and error handling
 local loadImage = function(imagePath) 
   local status, msg = pcall(love.graphics.newImage, imagePath)
-  if(status)
+  if (status) then
     return msg
   else
     return love.graphics.newImage("assets/default.png")
