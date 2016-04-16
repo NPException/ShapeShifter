@@ -25,8 +25,12 @@ function Menu:draw()
   
   lg.draw(images.backgrounds.background_ph,0,0,0)
   
+  local title = "ShapeShifter"
+  local copyright = "Copyright 2016"
+  local copyright_names = " NPException\n Spriteman\n ChaosChaot"
+  
   local font = lg.getFont()
-  local width = font:getWidth("ShapeShifter")
+  local width = font:getWidth(title)
   local height = font:getHeight()
   
   if #self.buttons>0 then
@@ -38,9 +42,17 @@ function Menu:draw()
   
   lg.setColor(255,255,255)
   
-  lg.print("ShapeShifter",config.width/2,100,0,5,5, width/2, height/2)
-  
-  lg.print("-> Start <-",200,500,0,4,4, width/2, height/2)
+  lg.print(title,config.width/2,100,0,5,5, width/2, height/2)
+  lg.print(copyright,config.width/6,config.height-25,0,3,3, width/2, height/2)
+  lg.print(copyright_names,config.width-10,config.height-125,0,3,3, width, height/2)
+end
+
+function Menu:keypressed(key, scancode, isrepeat)
+  -- temp action to show Game-State
+  if (key == "kp-") then
+    local gameState = require("states.game").new()
+    globals.state = require("states.fader").fader( gameState, true, 1.5, function() globals.state = gameState end, {255,255,255})
+  end
 end
 
 function Menu:mousereleased( x, y, button )
