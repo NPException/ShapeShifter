@@ -17,6 +17,14 @@ function love.load( arg )
     
   love.graphics.setDefaultFilter("nearest","nearest")
   
+  -- load font
+  local font = love.graphics.newImageFont("assets/font/font.png",
+    " abcdefghijklmnopqrstuvwxyz"..
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ0"..
+    "123456789.,!?-+/():;%&`'*#=[]\""..
+    "äöüÄÖÜ")
+  love.graphics.setFont(font)
+  
   -- load initial game state here
   local menuState = require("states.menu").new()
   globals.state = require("states.fader").fader( menuState, true, 0.5, function() globals.state = menuState end )
@@ -68,6 +76,7 @@ end
 
 -- DRAW --
 function love.draw()
+  love.graphics.setColor(255,255,255)
   -- do game state draw here
   local state = globals.state
   if (state and state.draw) then

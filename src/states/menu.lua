@@ -19,7 +19,7 @@ function Menu:draw()
   
   lg.setColor(255,255,255,170)
   
-  lg.print("Shift It",100,100,0,1,1, width, height)
+  lg.print("Shift It",100,100,0,2,2, width/2, height/2)
   
 end
 
