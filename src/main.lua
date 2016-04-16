@@ -29,10 +29,6 @@ function love.keypressed( key, scancode, isrepeat )
     debug.debug()
   elseif (key == "escape") then
     love.event.quit()
-  elseif (key == "return") then
-    if (love.keyboard.isDown("lalt") or love.keyboard.isDown("ralt")) then
-      love.window.setFullscreen(not love.window.getFullscreen(), "desktop")
-    end
   end
   
   -- do game keypressed actions here
