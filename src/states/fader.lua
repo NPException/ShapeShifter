@@ -5,8 +5,6 @@ Fader.__index = function (table, key)
   return faderValue and faderValue or table.state[key]
 end
 
-local config = GLOBALS.config
-
 local setColor = love.graphics.setColor
 local fill = love.graphics.rectangle
 local floor = math.floor
@@ -15,15 +13,24 @@ local floor = math.floor
   Creates a new fader state, that will fade from/to the given colors with in the given amount of time.
   After the fade is complete, it will execute the doneCallback function.
 ]]--
-function Fader.fader( state, fadeIn, duration, doneCallback, colors )
+function Fader.create( state, fadeIn, duration, target, colors )
   local self = setmetatable({}, Fader)
   self.state = state
   self.fadeIn = fadeIn
   self.colors = colors or {0,0,0}
   self.alpha = fadeIn and 255 or 0
   self.duration = duration
-  self.doneCallback = doneCallback
+  self.target = target
   return self
+end
+
+function Fader.fadeTo( targetState, fadeOutTime, fadeInTime, colors )
+  local fadeIn = Fader.create( targetState, true, fadeInTime, targetState, colors )
+  if (fadeOutTime == 0) then
+    GLOBALS.state = fadeIn
+  else
+    GLOBALS.state = Fader.create( GLOBALS.state, false, fadeOutTime, fadeIn, colors )
+  end
 end
 
 function Fader:update( dt )
@@ -48,8 +55,12 @@ function Fader:update( dt )
     -- clamp it to the range 0-255
     alpha = alpha < 0 and 0 or alpha > 255 and 255 or alpha
     -- execute the doneCallback if present
-    if (self.doneCallback) then
-      self.doneCallback()
+    if (self.target) then
+      if (type(self.target) == "function") then
+        self.target()
+      else
+        GLOBALS.state = self.target
+      end
     end
     -- deactivate the fader
     self.duration = 0
@@ -63,6 +74,7 @@ function Fader:draw()
   -- draw the state first
   self.state:draw()
   
+  local config = GLOBALS.config
   -- cover it with our fader color
   setColor(self.colors)
   fill("fill", 0, 0, config.width, config.height)

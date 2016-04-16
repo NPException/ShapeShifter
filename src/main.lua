@@ -1,6 +1,7 @@
 -- global variables
 require("lib.stringfunctions")
 require("loop")
+local Fader = require("states.fader")
 
 GLOBALS = { debug = false }
 local globals = GLOBALS
@@ -25,6 +26,11 @@ function love.load( arg )
     return lg.getHeight()/globals.config.height
   end
   
+  globals.getMousePosition = function()
+    local x,y = love.mouse.getPosition()
+    return x/globals.scaleX(), y/globals.scaleY()
+  end
+  
   canvas = lg.newCanvas( globals.config.width, globals.config.height )
   
   lg.setCanvas(canvas)
@@ -41,7 +47,7 @@ function love.load( arg )
   
   -- load initial game state here
   local menuState = require("states.menu").new()
-  globals.state = require("states.fader").fader( menuState, true, 1.5, function() globals.state = menuState end, {255,255,255})
+  Fader.fadeTo( menuState, 0, 1.5, {255,255,255})
 end
 
 
@@ -66,7 +72,7 @@ end
 function love.mousepressed( x, y, button )
   local state = globals.state
   if (state and state.mousepressed) then
-    state:mousepressed( x*globals.scaleX(), y*globals.scaleY(), button )
+    state:mousepressed( x/globals.scaleX(), y/globals.scaleY(), button )
   end
 end
 
@@ -74,7 +80,7 @@ end
 function love.mousereleased( x, y, button )
   local state = globals.state
   if (state and state.mousereleased) then
-    state:mousereleased( x*globals.scaleX(), y*globals.scaleY(), button )
+    state:mousereleased( x/globals.scaleX(), y/globals.scaleY(), button )
   end
 end
 
