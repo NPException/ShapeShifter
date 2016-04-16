@@ -7,7 +7,8 @@ local globals = GLOBALS
 local lg
 
 -- main variables
-local  fps, mspf
+local fps, mspf
+local canvas
 
 
 -- LOAD --
@@ -24,7 +25,11 @@ function love.load( arg )
     return lg.getHeight()/globals.config.height
   end
   
-  lg.setDefaultFilter("nearest","nearest")
+  canvas = lg.newCanvas( globals.config.width, globals.config.height )
+  
+  lg.setCanvas(canvas)
+  
+  --lg.setDefaultFilter("nearest","nearest")
   
   -- load font
   local font = lg.newImageFont("assets/font/font.png",
@@ -93,12 +98,18 @@ end
 
 -- DRAW --
 function love.draw()
+  lg.setCanvas(canvas)
+  
   lg.setColor(255,255,255)
   -- do game state draw here
   local state = globals.state
   if (state and state.draw) then
     state:draw()
   end
+  
+  lg.setCanvas()
+  lg.setColor(255,255,255)
+  lg.draw(canvas, 0, 0, 0, globals.scaleX(), globals.scaleY())
 
   if (globals.debug) then
     love.graphics.setColor(0,0,0,128)

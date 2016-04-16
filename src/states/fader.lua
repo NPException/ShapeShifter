@@ -65,8 +65,7 @@ function Fader:draw()
   
   -- cover it with our fader color
   setColor(self.colors)
-  local width, height = love.graphics.getDimensions()
-  fill("fill", 0, 0, width, height)
+  fill("fill", 0, 0, config.width, config.height)
 end
 
 return Fader

@@ -6,15 +6,13 @@ local lg = love.graphics
 
 local images = require("lib.images")
 
-local sx, sy = globals.scaleX, globals.scaleY
-
 function Menu.new()
   return setmetatable({}, Menu)
 end
 
 function Menu:draw() 
   
-  lg.draw(images.backgrounds.background_ph,0,0,0, sx(), sy())
+  lg.draw(images.backgrounds.background_ph,0,0,0)
   
   local font = lg.getFont()
   local width = font:getWidth("ShapeShifter")
