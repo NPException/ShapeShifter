@@ -29,7 +29,7 @@ function love.load( arg )
   
   lg.setCanvas(canvas)
   
-  --lg.setDefaultFilter("nearest","nearest")
+  lg.setDefaultFilter("linear","nearest")
   
   -- load font
   local font = lg.newImageFont("assets/font/font.png",
@@ -66,7 +66,7 @@ end
 function love.mousepressed( x, y, button )
   local state = globals.state
   if (state and state.mousepressed) then
-    state:mousepressed( x, y, button )
+    state:mousepressed( x*globals.scaleX(), y*globals.scaleY(), button )
   end
 end
 
@@ -74,7 +74,7 @@ end
 function love.mousereleased( x, y, button )
   local state = globals.state
   if (state and state.mousereleased) then
-    state:mousereleased( x, y, button )
+    state:mousereleased( x*globals.scaleX(), y*globals.scaleY(), button )
   end
 end
 
