@@ -2,6 +2,7 @@ local Menu = {}
 Menu.__index = Menu
 
 local globals = GLOBALS
+local config = globals.config
 local lg = love.graphics
 
 local images = require("lib.images")
@@ -21,9 +22,9 @@ function Menu:draw()
   
   lg.setColor(255,255,255)
   
-  lg.print("ShapeShifter",150,100,0,2,2, width/2, height/2)
+  lg.print("ShapeShifter",config.width/2,100,0,5,5, width/2, height/2)
   
-  lg.print("-> Start <-",150,500,0,2,2, width/2, height/2)
+  lg.print("-> Start <-",200,500,0,4,4, width/2, height/2)
 end
 
 return Menu
