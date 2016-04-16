@@ -5,6 +5,7 @@ Fader.__index = function (table, key)
   return faderValue and faderValue or table.state[key]
 end
 
+local config = GLOBALS.config
 
 local setColor = love.graphics.setColor
 local fill = love.graphics.rectangle
@@ -15,14 +16,14 @@ local floor = math.floor
   After the fade is complete, it will execute the doneCallback function.
 ]]--
 function Fader.fader( state, fadeIn, duration, doneCallback, colors )
-  local wrap = setmetatable({}, Fader)
-  wrap.state = state
-  wrap.fadeIn = fadeIn
-  wrap.colors = colors or {0,0,0}
-  wrap.alpha = fadeIn and 255 or 0
-  wrap.duration = duration
-  wrap.doneCallback = doneCallback
-  return wrap
+  local self = setmetatable({}, Fader)
+  self.state = state
+  self.fadeIn = fadeIn
+  self.colors = colors or {0,0,0}
+  self.alpha = fadeIn and 255 or 0
+  self.duration = duration
+  self.doneCallback = doneCallback
+  return self
 end
 
 function Fader:update( dt )
@@ -63,9 +64,9 @@ function Fader:draw()
   self.state:draw()
   
   -- cover it with our fader color
-  local width, height = love.graphics.getDimensions()
   setColor(self.colors)
-  fill("fill", 0,0,width, height)
+  local width, height = love.graphics.getDimensions()
+  fill("fill", 0, 0, width, height)
 end
 
 return Fader

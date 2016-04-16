@@ -1,20 +1,24 @@
 local Menu = {}
+Menu.__index = Menu
 
 local globals = GLOBALS
 local lg = love.graphics
 
 local images = require("lib.images")
 
+local sx, sy = globals.scaleX, globals.scaleY
+
 function Menu.new()
-  return Menu
+  return setmetatable({}, Menu)
 end
 
 function Menu:draw() 
   
-  lg.draw(images.backgrounds.background_ph,0,0)
-    
-  local width = lg.getFont():getWidth("ShapeShifter")
-  local height = lg.getFont():getHeight()
+  lg.draw(images.backgrounds.background_ph,0,0,0, sx(), sy())
+  
+  local font = lg.getFont()
+  local width = font:getWidth("ShapeShifter")
+  local height = font:getHeight()
   
   
   lg.setColor(255,255,255)

@@ -4,6 +4,7 @@ require("loop")
 
 GLOBALS = { debug = false }
 local globals = GLOBALS
+local lg
 
 -- main variables
 local  fps, mspf
@@ -11,19 +12,27 @@ local  fps, mspf
 
 -- LOAD --
 function love.load( arg )
-  globals.debug = false
+  lg = love.graphics
   globals.config = require("conf")
   globals.time = 0
-    
-  love.graphics.setDefaultFilter("nearest","nearest")
+  
+  globals.scaleX = function()
+    return lg.getWidth()/globals.config.width
+  end
+  
+  globals.scaleY = function()
+    return lg.getHeight()/globals.config.height
+  end
+  
+  lg.setDefaultFilter("nearest","nearest")
   
   -- load font
-  local font = love.graphics.newImageFont("assets/font/font.png",
+  local font = lg.newImageFont("assets/font/font.png",
     " abcdefghijklmnopqrstuvwxyz"..
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0"..
     "123456789.,!?-+/():;%&`'*#=[]\""..
     "äöüÄÖÜ")
-  love.graphics.setFont(font)
+  lg.setFont(font)
   
   -- load initial game state here
   local menuState = require("states.menu").new()
@@ -51,8 +60,16 @@ end
 
 function love.mousepressed( x, y, button )
   local state = globals.state
-  if (state and state.keypressed) then
+  if (state and state.mousepressed) then
     state:mousepressed( x, y, button )
+  end
+end
+
+
+function love.mousereleased( x, y, button )
+  local state = globals.state
+  if (state and state.mousereleased) then
+    state:mousereleased( x, y, button )
   end
 end
 
@@ -76,13 +93,13 @@ end
 
 -- DRAW --
 function love.draw()
-  love.graphics.setColor(255,255,255)
+  lg.setColor(255,255,255)
   -- do game state draw here
   local state = globals.state
   if (state and state.draw) then
     state:draw()
   end
-  
+
   if (globals.debug) then
     love.graphics.setColor(0,0,0,128)
     love.graphics.rectangle("fill",0,0,100,40)

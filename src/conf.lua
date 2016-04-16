@@ -45,6 +45,9 @@ end
 -- GAME CONFIG --
 -----------------
 local config = {
+  width = 1080,
+  height = 1920,
   maxfps = 1000 -- not really the fps limit. 1 divided by this value is the time in seconds that the main loop will wait after processing a 
 }
+
 return config
