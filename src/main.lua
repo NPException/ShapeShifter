@@ -35,7 +35,7 @@ function love.keypressed( key, scancode, isrepeat )
   -- do game keypressed actions here
   local state = globals.state
   if (state and state.keypressed) then
-    state.keypressed( key, scancode, isrepeat )
+    state:keypressed( key, scancode, isrepeat )
   end
 end
 
@@ -43,7 +43,7 @@ end
 function love.mousepressed( x, y, button )
   local state = globals.state
   if (state and state.keypressed) then
-    state.mousepressed( x, y, button )
+    state:mousepressed( x, y, button )
   end
 end
 
@@ -55,7 +55,7 @@ function love.update( dt )
   -- do game state update here
   local state = globals.state
   if (state and state.update) then
-    state.update( dt )
+    state:update( dt )
   end
   
   if (globals.debug) then
@@ -70,7 +70,7 @@ function love.draw()
   -- do game state draw here
   local state = globals.state
   if (state and state.draw) then
-    state.draw( dt )
+    state:draw( dt )
   end
   
   if (globals.debug) then
