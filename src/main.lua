@@ -69,8 +69,8 @@ end
 function love.draw()
   -- do game state draw here
   local state = globals.state
-  if (state and state.update) then
-    state.update( dt )
+  if (state and state.draw) then
+    state.draw( dt )
   end
   
   if (globals.debug) then
