@@ -1,8 +1,8 @@
 local Fader = {}
 Fader.__index = function (table, key)
-  local faderMethod = Fader[key]
-  -- if there is a method explicitly declared in Fader we return it, otherwise we just hand out the wrapped state's method
-  return faderMethod and faderMethod or table.state[key]
+  local faderValue = Fader[key]
+  -- if there is a value explicitly declared in Fader we return it, otherwise we just hand out the wrapped state's value
+  return faderValue and faderValue or table.state[key]
 end
 
 
