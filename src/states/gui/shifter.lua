@@ -54,16 +54,14 @@ local function distSqr(ax, ay, bx, by)
   return dx*dx + dy*dy
 end
 
-local function clampBetween(x, y, node1, node2)
+local function isBetween(x, y, node1, node2)
   local x1, y1, x2, y2 = node1.x, node1.y, node2.x, node2.y
   local xmin = x1<x2 and x1 or x2
   local xmax = x1>x2 and x1 or x2
   local ymin = y1<y2 and y1 or y2
   local ymax = y1>y2 and y1 or y2
   
-  local cx = x<xmin and xmin or x>xmax and xmax or x
-  local cy = y<ymin and ymin or y>ymax and ymax or y
-  return cx, cy
+  return x>=xmin and x<=xmax and y>=ymin and y<=ymax
 end
 
 function Shifter:moveTo( x, y )
@@ -86,16 +84,23 @@ function Shifter:moveTo( x, y )
     end
   end
   
+  print(nextGear)
+  
   local gearNode = gearbox.nodes[self.gear]
   local nextGearNode = gearbox.nodes[nextGear]
   
-  nextX, nextY = clampBetween(nextX, nextY, gearNode, nextGearNode)
-  
+  local inBetween = isBetween( nextX, nextY, gearNode, nextGearNode )
+    
   local distToCurrentGear = distSqr(gearNode.x, gearNode.y, nextX, nextY)
   local distToNextGear = distSqr(nextGearNode.x, nextGearNode.y, nextX, nextY)
   
   if (distToNextGear < distToCurrentGear) then
     self.gear = nextGear
+  end
+  
+  if (not inBetween) then
+    gearNode = gearbox.nodes[self.gear]
+    nextX, nextY = gearNode.x, gearNode.y
   end
   
   self.x, self.y = nextX, nextY
