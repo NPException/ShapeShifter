@@ -17,7 +17,7 @@ end
 function Menu.new()
   local self = setmetatable({}, Menu)
   self.buttons = {}
-  self.buttons[1] = Button.new(300,700, images.button_start, startGameCallback)
+  self.buttons[1] = Button.new(300,700, images.button_start, images.button_start_mask, startGameCallback)
   return self
 end
 

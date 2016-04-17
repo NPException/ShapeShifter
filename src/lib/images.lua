@@ -18,10 +18,19 @@ local images = {
   -- backgrounds
   background_game = "assets/gearshift/game_background.png",
   background_ph = "assets/background_placeholder.png",
+  
   -- buttons
-  button_start = "assets/menu/buttons/btn_start.png",
+  button_start = "assets/menu/buttons/btn_startgame.png",
+  button_start_mask = "assets/menu/buttons/btn_startgame_mask.png",
   button_quit = "assets/menu/buttons/btn_quit.png",
-  button_help = "assets/menu/buttons/btn_help.png",
+  button_quit_mask = "assets/menu/buttons/btn_quit_mask.png",
+  button_help = "assets/menu/buttons/btn_howtoplay.png",
+  button_help_mask = "assets/menu/buttons/btn_howtoplay_mask.png",
+  button_choose_driver = "assets/menu/buttons/btn_chooseyourdriver.png",
+  button_arrow_left = "assets/menu/buttons/btn_arrow_left.png",
+  button_arrow_left_mask = "assets/menu/buttons/btn_arrow_left_mask.png",
+  button_arrow_right = "assets/menu/buttons/btn_arrow_right.png",
+  button_arrow_right_mask = "assets/menu/buttons/btn_arrow_right_mask.png",
   
   -- cars
   car1 = "assets/inscreen/car1.png",
