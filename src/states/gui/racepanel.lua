@@ -12,11 +12,11 @@ function Panel.new(frontCarImage, backCarImage)
   
   self.trackPosition = 0
   self.frontPosition = 0
-  self.backPostition = 0
+  self.backPosition = 0
   
   self.frontMoving = false
   self.backMoving = false
-  self.time = 1
+  self.time = 0
   
   return self
 end
@@ -27,8 +27,9 @@ end
   backPosition = position of the back car on the track
 ]]--
 function Panel:update(dt, trackPosition, frontPosition, backPosition)
-  self.time = self.time + (self.time * dt)
-  if self.time >= 2 then
+  self.time = self.time + (1 * dt)
+  if self.time > 2 then
+    print("Tick")
     -- check car is moving
     if self.frontPosition ~= frontPosition then
       self.frontMoving = true
@@ -40,24 +41,33 @@ function Panel:update(dt, trackPosition, frontPosition, backPosition)
     else
       self.backMoving = false
     end
-    print("tick")
-    self.time = 1
+
+    self.time = 0
   end
   
   self.trackPosition = trackPosition
   self.frontPosition = frontPosition
-  self.backPostition = backPosition
+  self.backPosition = backPosition
 end
 
 function Panel:draw()
   -- draw scenery
   lg.draw(images.mountains,self.trackPosition * 0.1,0,0,2)
   lg.draw(images.bollards_bg,self.trackPosition + 2,210,0,1.5)
-  lg.draw(images.road,self.trackPosition,250,0,2)
   
+  -- road
+  lg.draw(images.road,self.trackPosition,250,0,2)
+  if math.floor((-self.trackPosition % 922)+0.5) == 0 then
+    lg.draw(images.road,self.trackPosition,250,0,2)
+    print("new Track")
+  end
+  if self.time > 1.9 then
+  print(math.floor((-self.trackPosition % 922)+0.5))
+ end
+ 
   -- draw cars
   if self.backMoving and self.time >=1.5 then backVibration = math.random(0.2,1.5) else backVibration = 0 end
-  lg.draw(self.backCarImage,self.backPostition,backVibration + 200,0,0.8)
+  lg.draw(self.backCarImage,self.backPosition,backVibration + 200,0,0.8)
   if self.frontMoving and self.time >=1.5 then frontVibration = math.random(0.2,1.5)  else frontVibration = 0 end
   lg.draw(self.frontCarImage,self.frontPosition,frontVibration + 250,0)
   

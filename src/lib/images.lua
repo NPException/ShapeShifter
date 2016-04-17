@@ -25,7 +25,7 @@ local images = {
   
   -- cars
   car1 = "assets/inscreen/car1.png",
-  car2 = "assets/inscreen/car1.png",
+  car2 = "assets/inscreen/car2.png",
   
   -- inscreen Objects
   road = "assets/inscreen/road.png",
