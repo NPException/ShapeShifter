@@ -22,9 +22,16 @@ local images = {
   button_start = "assets/buttons/btn_start.png",
   button_quit = "assets/buttons/btn_quit.png",
   button_help = "assets/buttons/btn_help.png",
+  
   -- cars
-  car1 = "assets/cars/car1",
-  car2 = "assets/cars/car2",
+  car1 = "assets/inscreen/car1.png",
+  car2 = "assets/inscreen/car1.png",
+  
+  -- inscreen Objects
+  road = "assets/inscreen/road.png",
+  bollards_bg = "assets/inscreen/bollards_background.png",
+  bollards_fg = "assets/inscreen/bollards_foreground.png",
+  mountains = "assets/inscreen/mountains.png",
   
   -- shifter
   shift_knob = "assets/gearshift/shift_knob.png",
