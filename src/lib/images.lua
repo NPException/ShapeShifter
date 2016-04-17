@@ -17,7 +17,11 @@ end
 local images = {
   -- backgrounds
   background_game = "assets/gearshift/game_background.png",
-  background_ph = "assets/background_placeholder.png",
+  background_menu = "assets/menu/background_menu.png",
+  
+  -- title
+  game_title = "assets/menu/game_title.png",
+  fuzzy_dice = "assets/misc/fuzzy_dice.png",
   
   -- buttons
   button_start = "assets/menu/buttons/btn_startgame.png",

@@ -14,23 +14,29 @@ local function startGameCallback()
   Fader.fadeTo( gameState, 0.2, 0.4, {255,255,255} )
 end
 
+local function howToPlayCallback()
+  
+end
+
 function Menu.new()
   local self = setmetatable({}, Menu)
   self.buttons = {}
-  self.buttons[1] = Button.new(300,700, images.button_start, images.button_start_mask, startGameCallback)
+  self.buttons[1] = Button.new(85,860, images.button_start, images.button_start_mask, startGameCallback)
+  self.buttons[2] = Button.new(85,1180, images.button_help, images.button_help_mask, howToPlayCallback)
   return self
 end
 
 function Menu:draw() 
   
-  lg.draw(images.background_ph,0,0,0)
-  
-  local title = "ShapeShifter"
+  lg.draw(images.background_menu,0,0,0)
+  lg.draw(images.fuzzy_dice,10,10,0)
+  lg.draw(images.game_title,0,0,0)
+
   local copyright = "Copyright 2016"
   local copyright_names = " NPException\n Spriteman\n ChaosChaot"
   
   local font = lg.getFont()
-  local width = font:getWidth(title)
+  local width = font:getWidth(copyright)
   local height = font:getHeight()
   
   if #self.buttons>0 then
@@ -41,8 +47,7 @@ function Menu:draw()
   
   lg.setColor(255,255,255)
   
-  lg.print(title,config.width/2,100,0,5,5, width/2, height/2)
-  lg.print(copyright,config.width/6,config.height-25,0,3,3, width/2, height/2)
+  lg.print(copyright,config.width/5,config.height-25,0,3,3, width/2, height/2)
   lg.print(copyright_names,config.width-10,config.height-125,0,3,3, width, height/2)
 end
 
