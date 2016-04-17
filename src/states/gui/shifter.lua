@@ -5,10 +5,14 @@ local images = require("lib.images")
 local lg = love.graphics
 
 local gearbox = require("lib.gearbox")
+local gears = {"a","b","c","d","e","f"}
+local symbols = {}
+for i=1,12 do
+  symbols[i] = images["shift_symbol_"..i]
+end
 
-function Shifter.new( game )
+function Shifter.new()
   local self = setmetatable({}, Shifter)
-  self.game = game
   
   self.knobImage = images.shift_knob
   local knobW, knobH = self.knobImage:getDimensions()
@@ -25,18 +29,21 @@ function Shifter.new( game )
   self.rodOffsetX = -self.rodImage:getWidth()/2
   self.rodOffsetY = -self.rodImage:getHeight() + self.rodRadius + 10
   
-  self.x = gearbox.nodes.a.x
-  self.y = gearbox.nodes.a.y
-  self.gear = "a"
+  self.nearestGear = "n2"
+  local gearNode = gearbox.nodes[self.nearestGear]
+  self.x = gearNode.x
+  self.y = gearNode.y
   
   self.isGrabbed = false
   
-  self.symbols = {}
-  for i=1,12 do
-    self.symbols[i] = images["shift_symbol_"..i]
-  end
-  
   return self
+end
+
+
+local function distSqr(ax, ay, bx, by)
+  local dx = ax-bx
+  local dy = ay-by
+  return dx*dx + dy*dy
 end
 
 
@@ -46,13 +53,17 @@ function Shifter:grab( grab, x, y )
     self.grabX = x - self.x
     self.grabY = y - self.y + self.knobOffset
   end
+  if (not grab and not self.nearestGear:startsWith("n")) then
+    local snapDistance = 100
+    local gearNode = gearbox.nodes[self.nearestGear]
+    local sqrDistToGear = distSqr(self.x, self.y, gearNode.x, gearNode.y)
+    if (sqrDistToGear < snapDistance*snapDistance) then
+      self.x = gearNode.x
+      self.y = gearNode.y
+    end
+  end
 end
 
-local function distSqr(ax, ay, bx, by)
-  local dx = ax-bx
-  local dy = ay-by
-  return dx*dx + dy*dy
-end
 
 function Shifter:moveTo( x, y )
   local targetX = x - self.grabX
@@ -62,10 +73,10 @@ function Shifter:moveTo( x, y )
   local nextGearError
   local nextX, nextY
   
-  local neighbours = gearbox.neighbours[self.gear]
+  local neighbours = gearbox.neighbours[self.nearestGear]
   for i=1,#neighbours do
     local neighbour = neighbours[i]
-    local px, py = gearbox.project( targetX, targetY, self.gear, neighbour)
+    local px, py = gearbox.project( targetX, targetY, self.nearestGear, neighbour)
     local distanceError = distSqr(targetX, targetY, px, py)
     if not nextGear or distanceError<nextGearError then
       nextGear = neighbour
@@ -74,14 +85,14 @@ function Shifter:moveTo( x, y )
     end
   end
   
-  local gearNode = gearbox.nodes[self.gear]
+  local gearNode = gearbox.nodes[self.nearestGear]
   local nextGearNode = gearbox.nodes[nextGear]
     
   local distToCurrentGear = distSqr(gearNode.x, gearNode.y, nextX, nextY)
   local distToNextGear = distSqr(nextGearNode.x, nextGearNode.y, nextX, nextY)
   
   if (distToNextGear < distToCurrentGear) then
-    self.gear = nextGear
+    self.nearestGear = nextGear
   end
   
   self.x, self.y = nextX, nextY
