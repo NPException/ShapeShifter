@@ -10,6 +10,7 @@ function Panel.new(frontCarImage, backCarImage)
   self.frontCarImage = frontCarImage
   self.backCarImage = backCarImage
   
+  self.trackPosition = 0
   self.frontPosition = 0
   self.backPostition = 0
   
@@ -17,10 +18,12 @@ function Panel.new(frontCarImage, backCarImage)
 end
 
 --[[
-  frontPostion & backPosition: Values from 0 to 1. Indicating how far to the right the
-  cars should be drawn respectively
+  trackPosition = the point of the track where the rendering should start (the leftmost pixel)
+  frontPosition = position of the front car on the track
+  backPosition = position of the back car on the track
 ]]--
-function Panel:update(dt, frontPostion, backPosition)
+function Panel:update(dt, trackPosition frontPostion, backPosition)
+  self.trackPosition = trackPosition
   self.frontPostion = frontPostion
   self.backPosition = backPosition
 end
@@ -29,8 +32,8 @@ function Panel:draw()
   -- draw scenery
   
   -- draw cars
-  -- lg.draw(self.backCarImage, 30 + 500*self.backPosition ...
-  -- lg.draw(self.frontCarImage ...
+  -- lg.draw(self.backCarImage, ...
+  -- lg.draw(self.frontCarImage, ...
   
 end
 
