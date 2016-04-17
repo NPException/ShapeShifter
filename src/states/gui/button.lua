@@ -26,7 +26,7 @@ function Button.new( x, y, image, maskImage, actionFunction )
 end
 
 function Button:isOnButton( x, y )
-  local onButton = x>=self.x and x<=self.x+self.w and y>=self.y and y<=self.y+self.h
+  local onButton = x>=self.x and x<self.x+self.w and y>=self.y and y<self.y+self.h
   if self.maskData and onButton then
     local floor = math.floor
     local bx, by = floor(x-self.x), floor(y-self.y)
