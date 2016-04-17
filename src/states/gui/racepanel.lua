@@ -13,10 +13,21 @@ function Panel.new(frontCarImage, backCarImage)
   self.trackPosition = 0
   self.frontPosition = 0
   self.backPosition = 0
+  self.mountainPosition = 0
+  self.bollardBgPosition = 0
+  self.bollardFgPosition = 0
+  
+  self.backVibration = 0
+  self.frontVibration = 0
   
   self.frontMoving = false
   self.backMoving = false
   self.time = 0
+  
+  self.road_width = images.road:getWidth()
+  self.bollards_bg_width = images.bollards_bg:getWidth()
+  self.bollards_fg_width = images.bollards_fg:getWidth()
+  self.mountains_width = images.mountains:getWidth()
   
   return self
 end
@@ -27,9 +38,9 @@ end
   backPosition = position of the back car on the track
 ]]--
 function Panel:update(dt, trackPosition, frontPosition, backPosition)
-  self.time = self.time + (1 * dt)
+  self.time = self.time + (2 * dt)
   if self.time > 2 then
-    print("Tick")
+    --print(frontPosition .. " " .. trackPosition .. " " .. frontPosition)
     -- check car is moving
     if self.frontPosition ~= frontPosition then
       self.frontMoving = true
@@ -45,32 +56,40 @@ function Panel:update(dt, trackPosition, frontPosition, backPosition)
     self.time = 0
   end
   
-  self.trackPosition = -(trackPosition%922)
-  self.frontPosition = frontPosition
-  self.backPosition = backPosition
+  self.trackPosition = -(trackPosition%self.road_width)
+  self.mountainPosition = -((trackPosition * 0.1)%self.mountains_width)
+  self.bollardBgPosition = -(trackPosition%self.bollards_bg_width)
+  self.bollardFgPosition = -(trackPosition%self.bollards_fg_width)
+  
+  self.frontPosition = frontPosition - trackPosition
+  self.backPosition = backPosition - trackPosition
 end
 
 function Panel:draw()
   -- draw scenery
-  lg.draw(images.mountains,self.trackPosition * 0.1,0,0,2)
-  lg.draw(images.bollards_bg,self.trackPosition + 2,210,0,1.5)
+  lg.draw(images.mountains,self.mountainPosition,10,0)
+  lg.draw(images.mountains,self.mountainPosition + self.mountains_width,10,0)
+
+  if self.mountainPosition + self.mountains_width < 165 then
+    lg.draw(images.mountains,self.mountainPosition + self.mountains_width + self.mountains_width,10,0)
+  end
+  
+  lg.draw(images.bollards_bg,self.bollardBgPosition,210,0)
+  lg.draw(images.bollards_bg,self.bollardBgPosition + self.bollards_bg_width,210,0)
   
   -- road
   lg.draw(images.road,self.trackPosition,250)
-  lg.draw(images.road,self.trackPosition+922, 250)
-  
-  if self.time > 1.9 then
-  print(math.floor((-self.trackPosition % 922)+0.5))
- end
+  lg.draw(images.road,self.trackPosition+self.road_width, 250)
  
   -- draw cars
-  if self.backMoving and self.time >=1.5 then backVibration = math.random(0.2,1.5) else backVibration = 0 end
-  lg.draw(self.backCarImage,self.backPosition,backVibration + 200,0,0.8)
-  if self.frontMoving and self.time >=1.5 then frontVibration = math.random(0.2,1.5)  else frontVibration = 0 end
-  lg.draw(self.frontCarImage,self.frontPosition,frontVibration + 250,0)
+  if self.backMoving and self.time >=1.5 then self.backVibration = math.random(0.2,1.5) else self.backVibration = 0 end
+  lg.draw(self.backCarImage,self.backPosition,self.backVibration + 200,0,0.8)
+  if self.frontMoving and self.time >=1.5 then self.frontVibration = math.random(0.2,1.5)  else self.frontVibration = 0 end
+  lg.draw(self.frontCarImage,self.frontPosition,self.frontVibration + 250,0)
   
   -- draw foreground scenery
-  lg.draw(images.bollards_fg,self.trackPosition + 2,360,0,1.5)
+  lg.draw(images.bollards_fg,self.bollardFgPosition + 2,360,0)
+  lg.draw(images.bollards_fg,self.bollardFgPosition + self.bollards_fg_width + 2,360,0)
 end
 
 return Panel
