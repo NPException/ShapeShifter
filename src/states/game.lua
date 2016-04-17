@@ -21,7 +21,7 @@ end
 function Game:update(dt)
   -- TODO update positions
   
-  self.racePanel:update( self.trackPosition, self.frontCarPosition, self.backCarPosition )
+  self.racePanel:update(dt, self.trackPosition, self.frontCarPosition, self.backCarPosition )
 end
 
 function Game:draw()
