@@ -13,8 +13,8 @@ function Game.new()
   local self = setmetatable({}, Game)
   self.racePanel = RacePanel.new(images.car1, images.car2)
   self.trackPosition = 0
-  self.frontCarPosition = 100
-  self.backCarPosition = 100
+  self.frontCarPosition = 0
+  self.backCarPosition = 0
   self.frontCarAcceleration = 0
   self.backCarAcceleration = 0
   
@@ -26,7 +26,6 @@ end
 function Game:update(dt)
   self.shifter:update(dt)
   
-  self.trackPosition = self.trackPosition + 0.1 
   self.frontCarPosition = self.frontCarPosition + self.frontCarAcceleration
   self.backCarPosition = self.backCarPosition + self.backCarAcceleration
   
