@@ -35,9 +35,8 @@ end
 
 function Fader:update( dt )
   -- update the wrapped state if it has an update method
-  local stateUpdate = self.state.update
-  if stateUpdate then
-    stateUpdate(dt)
+  if self.state.update then
+    self.state:update(dt)
   end
   
   -- don't update if the duration was set to 0
