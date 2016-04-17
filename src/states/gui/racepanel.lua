@@ -45,7 +45,7 @@ function Panel:update(dt, trackPosition, frontPosition, backPosition)
     self.time = 0
   end
   
-  self.trackPosition = trackPosition
+  self.trackPosition = -(trackPosition%922)
   self.frontPosition = frontPosition
   self.backPosition = backPosition
 end
@@ -56,11 +56,9 @@ function Panel:draw()
   lg.draw(images.bollards_bg,self.trackPosition + 2,210,0,1.5)
   
   -- road
-  lg.draw(images.road,self.trackPosition,250,0,2)
-  if math.floor((-self.trackPosition % 922)+0.5) == 0 then
-    lg.draw(images.road,self.trackPosition,250,0,2)
-    print("new Track")
-  end
+  lg.draw(images.road,self.trackPosition,250)
+  lg.draw(images.road,self.trackPosition+922, 250)
+  
   if self.time > 1.9 then
   print(math.floor((-self.trackPosition % 922)+0.5))
  end
