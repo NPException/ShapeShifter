@@ -48,7 +48,7 @@ function Button:draw()
   if self:isOnButton(globals.getMousePosition()) then
     lg.setColor(255,255,255)
   else
-    lg.setColor(255,255,255,120)
+    lg.setColor(255,255,255,190)
   end
   lg.draw(self.image, self.x, self.y)
 end

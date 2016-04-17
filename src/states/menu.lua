@@ -18,19 +18,24 @@ local function howToPlayCallback()
   
 end
 
+local function quitCallback()
+  love.event.quit()
+end
+
 function Menu.new()
   local self = setmetatable({}, Menu)
   self.buttons = {}
   self.buttons[1] = Button.new(85,860, images.button_start, images.button_start_mask, startGameCallback)
   self.buttons[2] = Button.new(85,1180, images.button_help, images.button_help_mask, howToPlayCallback)
+  self.buttons[3] = Button.new(435,1530, images.button_quit, images.button_quit_mask, quitCallback)
   return self
 end
 
 function Menu:draw() 
   
   lg.draw(images.background_menu,0,0,0)
-  lg.draw(images.fuzzy_dice,10,10,0)
   lg.draw(images.game_title,0,0,0)
+  lg.draw(images.fuzzy_dice,100,-80,0)
 
   local copyright = "Copyright 2016"
   local copyright_names = " NPException\n Spriteman\n ChaosChaot"
