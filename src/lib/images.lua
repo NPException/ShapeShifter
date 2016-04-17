@@ -19,9 +19,9 @@ local images = {
   background_game = "assets/gearshift/game_background.png",
   background_ph = "assets/background_placeholder.png",
   -- buttons
-  button_start = "assets/buttons/btn_start.png",
-  button_quit = "assets/buttons/btn_quit.png",
-  button_help = "assets/buttons/btn_help.png",
+  button_start = "assets/menu/buttons/btn_start.png",
+  button_quit = "assets/menu/buttons/btn_quit.png",
+  button_help = "assets/menu/buttons/btn_help.png",
   
   -- cars
   car1 = "assets/inscreen/car1.png",
