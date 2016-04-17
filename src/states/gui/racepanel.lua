@@ -12,6 +12,8 @@ function Panel.new(frontCarImage, backCarImage)
   
   self.trackPosition = 0
   self.frontPosition = 0
+  self.frontPositionOld = 0
+  self.backPositionOld = 0
   self.backPosition = 0
   self.mountainPosition = 0
   self.bollardBgPosition = 0
@@ -40,19 +42,21 @@ end
 function Panel:update(dt, trackPosition, frontPosition, backPosition)
   self.time = self.time + (2 * dt)
   if self.time > 2 then
-    --print(frontPosition .. " " .. trackPosition .. " " .. frontPosition)
+    --print(self.frontPositionOld .. " " .. trackPosition .. " " .. frontPosition)
     -- check car is moving
-    if self.frontPosition ~= frontPosition then
+    if self.frontPositionOld ~= frontPosition then
       self.frontMoving = true
     else
       self.frontMoving = false
     end
-    if self.backPosition ~= backPosition then
+    if self.backPositionOld ~= backPosition then
       self.backMoving = true
     else
       self.backMoving = false
     end
-
+  
+  self.frontPositionOld = frontPosition
+  self.backPositionOld = backPosition
     self.time = 0
   end
   
