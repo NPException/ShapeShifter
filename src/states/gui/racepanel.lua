@@ -22,7 +22,7 @@ end
   frontPosition = position of the front car on the track
   backPosition = position of the back car on the track
 ]]--
-function Panel:update(dt, trackPosition frontPostion, backPosition)
+function Panel:update(dt, trackPosition, frontPostion, backPosition)
   self.trackPosition = trackPosition
   self.frontPostion = frontPostion
   self.backPosition = backPosition
