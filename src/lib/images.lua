@@ -8,6 +8,7 @@ local loadImage = function(imagePath)
   if (status) then
     return msg
   else
+    print("No image present at path '"..imagePath.."'. Using default image.")
     return love.graphics.newImage("assets/default.png")
   end
 end
@@ -16,19 +17,19 @@ end
 local images = {
   -- backgrounds
   background_game = "assets/gearshift/game_background.png",
-  background_title = "assets/backgrounds/background_title.png",
   background_ph = "assets/background_placeholder.png",
-  -- cars
-  car1 = "assets/cars/car1.png",
-  car2 = "assets/cars/car2.png",
   -- buttons
-  btn_start = "assets/buttons/btn_start.png",
-  btn_quit = "assets/buttons/btn_quit.png",
+  button_start = "assets/buttons/btn_start.png",
+  button_quit = "assets/buttons/btn_quit.png",
+  button_help = "assets/buttons/btn_help.png",
 }
 
 function images.__index(table, key)
   local path = images[key]
-  print("Loading image: '"..key.."', path: '"..tostring(path).."'")
+  if (not path) then
+    error("Tried to access undeclared image: '"..key.."'")
+  end
+  print("Loading image: '"..key.."', path: '"..path.."'")
   local image = loadImage(path)
   rawset(table, key, image)
   return image
