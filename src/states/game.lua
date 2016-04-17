@@ -23,7 +23,7 @@ end
 
 function Game:update(dt)
   self.shifter:update(dt)
-  self.trackPosition = self.trackPosition - 0.1
+  self.trackPosition = self.trackPosition + 0.1 
   self.racePanel:update(dt, self.trackPosition, self.frontCarPosition, self.backCarPosition )
 end
 

@@ -4,6 +4,7 @@ Shifter.__index = Shifter
 local images = require("lib.images")
 local lg = love.graphics
 
+local gearbox = require("lib.gearbox")
 
 function Shifter.new( game )
   local self = setmetatable({}, Shifter)
@@ -51,8 +52,7 @@ function Shifter:moveTo( x, y )
   local targetX = x - self.grabX
   local targetY = y + self.knobOffset - self.grabY
   
-  self.x = targetX
-  self.y = targetY
+  self.x, self.y = gearbox.project(targetX, targetY, "a", "n1")
 end
 
 
