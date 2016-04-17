@@ -10,7 +10,7 @@ local Button = require("states.gui.button")
 local Fader = require("states.fader")
 
 local function startGameCallback()
-  local gameState = require("states.game")
+  local gameState = require("states.game").new()
   Fader.fadeTo( gameState, 0.2, 0.4, {255,255,255} )
 end
 

@@ -22,6 +22,9 @@ local images = {
   button_start = "assets/buttons/btn_start.png",
   button_quit = "assets/buttons/btn_quit.png",
   button_help = "assets/buttons/btn_help.png",
+  -- cars
+  car1 = "assets/cars/car1",
+  car2 = "assets/cars/car2",
 }
 
 function images.__index(table, key)
