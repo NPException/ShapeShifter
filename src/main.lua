@@ -57,8 +57,6 @@ function love.keypressed( key, scancode, isrepeat )
     globals.debug = not globals.debug
   elseif (scancode == "`") then
     debug.debug()
-  elseif (key == "escape") then
-    love.event.quit()
   end
   
   -- do game keypressed actions here
@@ -81,6 +79,15 @@ function love.mousereleased( x, y, button )
   local state = globals.state
   if (state and state.mousereleased) then
     state:mousereleased( x/globals.scaleX(), y/globals.scaleY(), button )
+  end
+end
+
+
+function love.mousemoved( x, y, dx, dy )
+  local state = globals.state
+  if (state and state.mousemoved) then
+    local sx, sy = globals.scaleX(), globals.scaleY()
+    state:mousemoved( x/sx, y/sy, dx/sx, dy/sy )
   end
 end
 

@@ -7,6 +7,7 @@ local lg = love.graphics
 
 local images = require("lib.images")
 local RacePanel = require("states.gui.racepanel")
+local Shifter = require("states.gui.shifter")
 
 function Game.new()
   local self = setmetatable({}, Game)
@@ -14,15 +15,18 @@ function Game.new()
   self.trackPosition = 0
   self.frontCarPosition = 100
   self.backCarPosition = 100
+  
+  self.shifter = Shifter.new(self)
   return self
 end
 
 
 function Game:update(dt)
-  -- TODO update positions
+  self.shifter:update(dt)
   
   self.racePanel:update(dt, self.trackPosition, self.frontCarPosition, self.backCarPosition )
 end
+
 
 function Game:draw()
   self.racePanel:draw()
@@ -31,7 +35,36 @@ function Game:draw()
   -- draw background
   lg.draw(images.background_game,0,0)
   -- draw elements
-  
+  self.shifter:draw()
 end
+
+
+function Game:keypressed( key, scancode, isrepeat )
+  if (key == "escape") then
+    local Fader = require("states.fader")
+    local Menu = require("states.menu")
+    Fader.fadeTo( Menu.new(), 0.2, 0.4, {255,255,255})
+  end
+end
+
+
+function Game:mousepressed( x, y, button )
+  if (self.shifter:isKnob( x, y )) then
+    self.shifter:grab(true, x, y)
+  end
+end
+
+
+function Game:mousereleased( x, y, button )
+  self.shifter:grab(false)
+end
+
+
+function Game:mousemoved( x, y, dx, dy )
+  if (self.shifter.isGrabbed) then
+    self.shifter:moveTo( x, y )
+  end
+end
+
 
 return Game

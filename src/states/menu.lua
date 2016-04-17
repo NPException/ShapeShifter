@@ -47,7 +47,9 @@ function Menu:draw()
 end
 
 function Menu:keypressed(key, scancode, isrepeat)
-  
+  if (key == "escape") then
+    love.event.quit()
+  end
 end
 
 function Menu:mousereleased( x, y, button )
