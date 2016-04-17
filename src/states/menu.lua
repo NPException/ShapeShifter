@@ -10,20 +10,20 @@ local Button = require("states.gui.button")
 local Fader = require("states.fader")
 
 local function startGameCallback()
-  local playState = Menu.new() -- TODO
-  Fader.fadeTo( playState, 1, 1, {255,255,255} )
+  local gameState = require("states.game")
+  Fader.fadeTo( gameState, 0.2, 0.4, {255,255,255} )
 end
 
 function Menu.new()
   local self = setmetatable({}, Menu)
   self.buttons = {}
-  self.buttons[1] = Button.new(300,700, images.buttons.btn_start, startGameCallback)
+  self.buttons[1] = Button.new(300,700, images.button_start, startGameCallback)
   return self
 end
 
 function Menu:draw() 
   
-  lg.draw(images.backgrounds.background_ph,0,0,0)
+  lg.draw(images.background_ph,0,0,0)
   
   local title = "ShapeShifter"
   local copyright = "Copyright 2016"
@@ -39,7 +39,6 @@ function Menu:draw()
     end
   end
   
-  
   lg.setColor(255,255,255)
   
   lg.print(title,config.width/2,100,0,5,5, width/2, height/2)
@@ -48,15 +47,10 @@ function Menu:draw()
 end
 
 function Menu:keypressed(key, scancode, isrepeat)
-  -- temp action to show Game-State
-  if (key == "kp-") then
-    local gameState = require("states.game").new()
-    globals.state = require("states.fader").fader( gameState, true, 1.5, function() globals.state = gameState end, {255,255,255})
-  end
+  
 end
 
 function Menu:mousereleased( x, y, button )
-  print("Menu mouse released: "..x..","..y)
   if #self.buttons>0 then
     for i=1,#self.buttons do
       self.buttons[i]:mousereleased(x,y,button)

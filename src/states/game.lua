@@ -15,7 +15,7 @@ function Game:draw()
   -- init
   
   -- draw background
-  lg.draw(images.backgrounds.background_ph,0,0,0) -- temp
+  lg.draw(images.background_game,0,0,0) -- temp
   -- draw elements
   
   -- draw scores
