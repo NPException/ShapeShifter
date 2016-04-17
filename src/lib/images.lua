@@ -25,6 +25,23 @@ local images = {
   -- cars
   car1 = "assets/cars/car1",
   car2 = "assets/cars/car2",
+  
+  -- shifter
+  shift_knob = "assets/gearshift/shift_knob.png",
+  shift_rod = "assets/gearshift/shift_rod.png",
+  shift_symbol_bg = "assets/gearshift/symbols/symbol_background.png",
+  shift_symbol_1 = "assets/gearshift/symbols/s_001.png",
+  shift_symbol_2 = "assets/gearshift/symbols/s_002.png",
+  shift_symbol_3 = "assets/gearshift/symbols/s_003.png",
+  shift_symbol_4 = "assets/gearshift/symbols/s_004.png",
+  shift_symbol_5 = "assets/gearshift/symbols/s_005.png",
+  shift_symbol_6 = "assets/gearshift/symbols/s_006.png",
+  shift_symbol_7 = "assets/gearshift/symbols/s_007.png",
+  shift_symbol_8 = "assets/gearshift/symbols/s_008.png",
+  shift_symbol_9 = "assets/gearshift/symbols/s_009.png",
+  shift_symbol_10 = "assets/gearshift/symbols/s_010.png",
+  shift_symbol_11 = "assets/gearshift/symbols/s_011.png",
+  shift_symbol_12 = "assets/gearshift/symbols/s_012.png",
 }
 
 function images.__index(table, key)
