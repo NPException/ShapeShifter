@@ -7,7 +7,7 @@ local lg = love.graphics
 local gearbox = require("lib.gearbox")
 local gears = {"a","b","c","d","e","f"}
 local symbolImages = {}
-for i=1,12 do
+for i=1,GLOBALS.config.numberOfSymbols do
   symbolImages[i] = images["shift_symbol_"..i]
 end
 

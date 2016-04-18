@@ -15,7 +15,8 @@ local function startGameCallback()
 end
 
 local function howToPlayCallback()
-  
+  local htp = require("states.howtoplay").new()
+  Fader.fadeTo( htp, 0.2, 0.4, {255,255,255} )
 end
 
 local function quitCallback()
@@ -36,13 +37,6 @@ function Menu:draw()
   lg.draw(images.background_menu,0,0,0)
   lg.draw(images.game_title,0,0,0)
   lg.draw(images.fuzzy_dice,100,-80,0)
-
-  local copyright = "Copyright 2016"
-  local copyright_names = " NPException\n Spriteman\n ChaosChaot"
-  
-  local font = lg.getFont()
-  local width = font:getWidth(copyright)
-  local height = font:getHeight()
   
   if #self.buttons>0 then
     for i=1,#self.buttons do
@@ -52,8 +46,8 @@ function Menu:draw()
   
   lg.setColor(255,255,255)
   
-  lg.print(copyright,config.width/5,config.height-25,0,3,3, width/2, height/2)
-  lg.print(copyright_names,config.width-10,config.height-125,0,3,3, width, height/2)
+  local w,h = images.credits:getDimensions()
+  lg.draw(images.credits, 1080/2-w/2, 1920-h*2)
 end
 
 function Menu:keypressed(key, scancode, isrepeat)

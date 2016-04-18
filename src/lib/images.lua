@@ -22,6 +22,9 @@ local images = {
   -- title
   game_title = "assets/menu/game_title.png",
   fuzzy_dice = "assets/misc/fuzzy_dice_updated_update_very_transparent.png",
+  howtoplay_title = "assets/menu/howtoplay_title.png",
+  howtoplay_text = "assets/menu/howtoplay_text.png",
+  credits = "assets/menu/credits.png",
   
   -- buttons
   button_start = "assets/menu/buttons/btn_startgame.png",

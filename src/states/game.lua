@@ -10,6 +10,12 @@ local RacePanel = require("states.gui.racepanel")
 local Shifter = require("states.gui.shifter")
 
 
+local symbolImages = {}
+for i=1,GLOBALS.config.numberOfSymbols do
+  symbolImages[i] = images["shift_symbol_"..i]
+end
+
+
 function Game.new()
   local self = setmetatable({}, Game)
   self.racePanel = RacePanel.new(images.car1, images.car2)
