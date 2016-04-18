@@ -272,7 +272,7 @@ function Shifter:draw()
     local symbol = self.gearSymbols[i]
     if (symbol) then
       local gearNode = gearbox.nodes[gears[i]]
-      lg.setColor(255,255,nextSymbol == symbol and 0 or 255)
+      lg.setColor(255,255,255)
       lg.draw(symbolBG, gearNode.x + sbgXOffset, gearNode.y + sbgYOffset)
       local symbolImage = symbolImages[symbol]
       local w,h = symbolImage:getDimensions()

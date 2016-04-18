@@ -189,6 +189,25 @@ function Game:draw()
   -- draw elements
   self.shifter:draw()
   
+  local vars = self.variables
+  if (not vars.running) then
+    local seq = vars.sequence
+    local symbol = symbolImages[seq[#seq]]
+    local sw, sh = symbol:getDimensions()
+    
+    if (#seq == 1) then
+      local image = images.race_panel_first_gear
+      lg.draw(image, 1080/2-image:getWidth()/2, 50)
+      lg.setColor(0,0,0)
+      lg.draw(symbol, 1080/2-sw/2, 600-sh/2)
+    else
+      local image = images.race_panel_next_gear
+      lg.draw(image, 1080/2-image:getWidth()/2, 50)
+      lg.setColor(0,0,0)
+      lg.draw(symbol, 1080/2-sw/2, 740-sh/2)
+    end
+  end
+  
   local flashAlpha = self.flashAlpha.a
   if (flashAlpha >= 1) then
     self.flashColor[4] = flashAlpha
