@@ -67,16 +67,17 @@ function Game:prepareNextRound()
   local variables = self.variables
   local seq = variables.sequence
   seq[#seq+1] = math.random(#symbolImages)
+  self.shifter:reset()
   self.shifter:setSequence(seq)
   
   variables.playerPos = 10
   variables.playerSpeed = 0
   variables.enemyPos = 20
   variables.enemySpeed = 0
-  variables.goal = #seq*50*oneMeter
+  variables.goal = #seq*70*oneMeter
   variables.canShift = true
   
-  self.enemyTween = Tween.new(#seq*3, variables, {enemySpeed=#seq*10}, "inOutQuad")
+  self.enemyTween = Tween.new(#seq*3/1.5, variables, {enemySpeed=#seq*10}, "inOutSine")
   self.playerTween = nil
 end
 
@@ -88,7 +89,7 @@ end
 function Game:correctGearCallback( seqIndex )
   local variables = self.variables
   variables.isNeutral = false
-  self.playerTween = Tween.new(1, variables, {playerSpeed=seqIndex*12}, "inOutBack")
+  self.playerTween = Tween.new(1, variables, {playerSpeed=5+seqIndex*10.2}, "inOutBack")
 end
 
 function Game:wrongGearCallback( seqIndex )
@@ -115,11 +116,13 @@ function Game:update(dt)
   local vars = self.variables
   
   -- tween updates
-  if self.enemyTween then
-    self.enemyTween:update(dt)
+  if self.enemyTween and self.enemyTween:update(dt) then
+    self.enemyTween = nil
   end
-  if self.playerTween then
-    self.playerTween:update(dt)
+  if self.playerTween and self.playerTween:update(dt) then
+    self.playerTween = nil
+  elseif vars.isNeutral then
+    vars.playerSpeed = math.max(0, vars.playerSpeed-0.1*dt)
   end
   
   vars.enemyPos = vars.enemyPos + vars.enemySpeed*oneMeter*dt
