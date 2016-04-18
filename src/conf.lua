@@ -46,6 +46,10 @@ end
 -----------------
 local config = {
   numberOfSymbols = 12,
+  carsAndCharacters = {
+    [1]={charX=500, carX=70},
+    [2]={charX=20, carX=300}
+  },
   width = 1080,
   height = 1920,
   maxfps = 1000 -- not really the fps limit. 1 divided by this value is the time in seconds that the main loop will wait after processing a 

@@ -9,6 +9,7 @@ local images = require("lib.images")
 local RacePanel = require("states.gui.racepanel")
 local Shifter = require("states.gui.shifter")
 
+local characters = require("states.carselect").characters
 
 local symbolImages = {}
 for i=1,GLOBALS.config.numberOfSymbols do
@@ -16,9 +17,21 @@ for i=1,GLOBALS.config.numberOfSymbols do
 end
 
 
-function Game.new()
+local function randomEnemyCarImage(playerChar)
+  local available = {}
+  for i=1,#characters do
+    if i~=playerChar then
+      available[#available+1] = i
+    end
+  end
+  return characters[available[math.random(#available)]].smallCar
+end
+
+
+function Game.new(playerChar)
   local self = setmetatable({}, Game)
-  self.racePanel = RacePanel.new(images.car1, images.car2)
+  self.playerChar = playerChar
+  self.racePanel = RacePanel.new(characters[playerChar].smallCar, randomEnemyCarImage(playerChar))
   self.trackPosition = 0
   self.frontCarPosition = 0
   self.backCarPosition = 0

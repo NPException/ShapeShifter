@@ -25,10 +25,13 @@ function Fader.create( state, fadeIn, duration, target, colors )
   return self
 end
 
-function Fader.fadeTo( targetState, fadeOutTime, fadeInTime, colors )
-  local fadeIn = Fader.create( targetState, true, fadeInTime, targetState, colors )
+function Fader.fadeTo( target, fadeOutTime, fadeInTime, colors )
+  local fadeIn = function()
+    local targetState = type(target) == "function" and target() or target
+    GLOBALS.state = Fader.create( targetState, true, fadeInTime, targetState, colors )
+  end
   if (fadeOutTime == 0) then
-    GLOBALS.state = fadeIn
+    fadeIn()
   else
     GLOBALS.state = Fader.create( GLOBALS.state, false, fadeOutTime, fadeIn, colors )
   end

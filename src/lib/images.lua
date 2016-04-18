@@ -42,9 +42,13 @@ local images = {
   button_arrow_right_mask = "assets/menu/buttons/btn_arrow_right_mask.png",
   button_back = "assets/menu/buttons/btn_back.png",
   
-  -- cars
-  car1 = "assets/inscreen/car1.png",
-  car2 = "assets/inscreen/car2.png",
+  -- cars and characters
+  car_small_1 = "assets/cars_characters/car_1_small.png",
+  car_large_1 = "assets/cars_characters/car_1_large.png",
+  character_1 = "assets/cars_characters/character_1.png",
+  car_small_2 = "assets/cars_characters/car_2_small.png",
+  car_large_2 = "assets/cars_characters/car_2_large.png",
+  character_2 = "assets/cars_characters/character_2.png",
   
   -- inscreen Objects
   road = "assets/inscreen/road.png",

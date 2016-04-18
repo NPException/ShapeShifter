@@ -10,13 +10,13 @@ local Button = require("states.gui.button")
 local Fader = require("states.fader")
 
 local function startGameCallback()
-  local gameState = require("states.game").new()
-  Fader.fadeTo( gameState, 0.2, 0.4, {255,255,255} )
+  local carselect = function() return require("states.carselect").new() end
+  Fader.fadeTo( carselect, 0.2, 0.2, {255,255,255} )
 end
 
 local function howToPlayCallback()
   local htp = require("states.howtoplay").new()
-  Fader.fadeTo( htp, 0.2, 0.4, {255,255,255} )
+  Fader.fadeTo( htp, 0.2, 0.2, {255,255,255} )
 end
 
 local function quitCallback()
