@@ -35,6 +35,11 @@ function Game.new(playerChar)
   local self = setmetatable({}, Game)
   local selfRef = self
   
+  self.flashColor = {255,255,255}
+  self.flashAlpha = {a=255}
+  self.flashTween = Tween.new(0.3, self.flashAlpha, {a=0}, "outSine")
+  self.flashTween:update(10) -- make flash finish
+  
   self.playerChar = playerChar
   self.racePanel = RacePanel.new(characters[playerChar].smallCar, randomEnemyCarImage(playerChar))
   self.shifter = Shifter.new(self)
@@ -63,6 +68,12 @@ function Game.new(playerChar)
 end
 
 
+function Game:flash(color)
+  self.flashColor = color
+  self.flashTween:reset()
+end
+
+
 function Game:prepareNextRound()
   local variables = self.variables
   local seq = variables.sequence
@@ -76,6 +87,10 @@ function Game:prepareNextRound()
   variables.enemySpeed = 0
   variables.goal = #seq*70*oneMeter
   variables.canShift = true
+  variables.shiftErrors = 0
+  
+  self.racePanel:setBackCarImage(randomEnemyCarImage(self.playerChar))
+  self.racePanel:setGoal(variables.goal)
   
   self.enemyTween = Tween.new(#seq*3/1.5, variables, {enemySpeed=#seq*10}, "inOutSine")
   self.playerTween = nil
@@ -89,11 +104,17 @@ end
 function Game:correctGearCallback( seqIndex )
   local variables = self.variables
   variables.isNeutral = false
+  variables.shiftErrors = 0
   self.playerTween = Tween.new(1, variables, {playerSpeed=5+seqIndex*10.2}, "inOutBack")
 end
 
 function Game:wrongGearCallback( seqIndex )
-  print("Wrong")
+  self:flash({250,50,0})
+  local variables = self.variables
+  variables.shiftErrors = variables.shiftErrors + 1
+  if variables.shiftErrors >= 3 then
+    self:roundEnd( false )
+  end
 end
 
 function Game:finalGearCallback()
@@ -104,7 +125,7 @@ end
 function Game:roundEnd( success )
   if (success) then
     self:prepareNextRound()
-    globals.state = Fader.create( self, true, 1, self, {255,255,255})
+    globals.state = Fader.create( globals.state, true, 1, self, {255,255,255})
   else
     local menu = require("states.menu").new()
     globals.state = Fader.create( menu, true, 1, menu, {250,20,0})
@@ -124,6 +145,8 @@ function Game:update(dt)
   elseif vars.isNeutral then
     vars.playerSpeed = math.max(0, vars.playerSpeed-0.1*dt)
   end
+  
+  self.flashTween:update(dt)
   
   vars.enemyPos = vars.enemyPos + vars.enemySpeed*oneMeter*dt
   vars.playerPos = vars.playerPos + vars.playerSpeed*oneMeter*dt
@@ -156,6 +179,13 @@ function Game:draw()
   lg.draw(images.background_game,0,0)
   -- draw elements
   self.shifter:draw()
+  
+  local flashAlpha = self.flashAlpha.a
+  if (flashAlpha >= 1) then
+    self.flashColor[4] = flashAlpha
+    lg.setColor(self.flashColor)
+    lg.rectangle("fill",0,0,config.width,config.height)
+  end
 end
 
 

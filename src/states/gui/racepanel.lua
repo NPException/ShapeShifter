@@ -19,6 +19,10 @@ function Panel.new(frontCarImage, backCarImage)
   self.bollardBgPosition = 0
   self.bollardFgPosition = 0
   
+  self.goal = 1
+  self.frontIndicator = 0
+  self.backIndicator = 0
+  
   self.backVibration = 0
   self.frontVibration = 0
   
@@ -32,6 +36,14 @@ function Panel.new(frontCarImage, backCarImage)
   self.mountains_width = images.mountains:getWidth()
   
   return self
+end
+
+function Panel:setBackCarImage( backCarImage )
+  self.backCarImage = backCarImage
+end
+
+function Panel:setGoal( goal )
+  self.goal = math.max(1,goal)
 end
 
 --[[
@@ -60,6 +72,9 @@ function Panel:update(dt, trackPosition, frontPosition, backPosition)
     self.time = 0
   end
   
+  self.frontIndicator = frontPosition/self.goal
+  self.backIndicator = backPosition/self.goal
+  
   self.trackPosition = -(trackPosition%self.road_width)
   self.mountainPosition = -((trackPosition * 0.1)%self.mountains_width)
   self.bollardBgPosition = -(trackPosition%self.bollards_bg_width)
@@ -87,13 +102,34 @@ function Panel:draw()
  
   -- draw cars
   if self.backMoving and self.time >=1.5 then self.backVibration = math.random(0.2,1.5) else self.backVibration = 0 end
-  lg.draw(self.backCarImage,self.backPosition,self.backVibration + 200,0,0.8)
+  local backScale = 0.8
+  lg.draw(self.backCarImage, self.backPosition, self.backVibration + 300-self.backCarImage:getHeight()*backScale, 0, backScale)
   if self.frontMoving and self.time >=1.5 then self.frontVibration = math.random(0.2,1.5)  else self.frontVibration = 0 end
-  lg.draw(self.frontCarImage,self.frontPosition,self.frontVibration + 250,0)
+  lg.draw(self.frontCarImage, self.frontPosition, self.frontVibration + 390-self.frontCarImage:getHeight(),0)
   
   -- draw foreground scenery
   lg.draw(images.bollards_fg,self.bollardFgPosition + 2,360,0)
   lg.draw(images.bollards_fg,self.bollardFgPosition + self.bollards_fg_width + 2,360,0)
+  
+  -- indicator bar
+  local indX, indY = 80,100
+  local indW = 700
+
+  local indFrontX = indX + indW*self.frontIndicator
+  
+  local indBackX = indX + indW*self.backIndicator
+  
+  lg.setColor(0,0,0)
+  lg.setLineWidth(5)
+  lg.setLineStyle("smooth")
+  lg.line(indX, indY, indX+indW, indY)
+  lg.line(indX, indY-10, indX, indY+10)
+  lg.line(indX+indW, indY-10, indX+indW, indY+10)
+  
+  lg.setColor(140,35,40)
+  lg.line(indBackX-10,indY-20, indBackX,indY-5, indBackX+10,indY-20)
+  lg.setColor(20,90,15)
+  lg.line(indFrontX-10,indY+20, indFrontX,indY+5, indFrontX+10,indY+20)
 end
 
 return Panel
