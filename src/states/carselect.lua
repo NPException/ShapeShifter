@@ -3,6 +3,7 @@ CarSelect.__index = CarSelect
 
 local lg = love.graphics
 
+local sounds = require("lib.sounds")
 local images = require("lib.images")
 local Button = require("states.gui.button")
 local Fader = require("states.fader")
@@ -40,8 +41,10 @@ function CarSelect.new()
     local charX = character.charX
     local charY = 1750 - character.char:getHeight()
     
-    local carButton = Button.new(carX,carY, character.largeCar, nil, callbackStart):setColor({255,255,255}):noSound()
-    local charButton = Button.new(charX,charY, character.char, nil, callbackStart):setColor({255,255,255}):noSound()
+    local carButton = Button.new(carX,carY, character.largeCar, nil, callbackStart):setColor({255,255,255})
+    carButton:setHoverSound(nil):setSound(sounds.shift_succeded)
+    local charButton = Button.new(charX,charY, character.char, nil, callbackStart):setColor({255,255,255})
+    charButton:setHoverSound(nil):setSound(sounds.shift_succeded)
       
     if i~=self.currentSelection then
       carButton.x = -1500
@@ -64,7 +67,7 @@ function CarSelect.new()
   rightY = by - rightY/2
   
   self.buttons = {
-    Button.new(chooseButtonX, chooseButtonY, images.button_choose_driver, nil, callbackStart),
+    Button.new(chooseButtonX, chooseButtonY, images.button_choose_driver, nil, callbackStart):setSound(sounds.shift_succeded),
     Button.new(leftX, leftY, images.button_arrow_left, images.button_arrow_left_mask, callbackLeft),
     Button.new(rightX, rightY, images.button_arrow_right, images.button_arrow_right_mask, callbackRight)
   }

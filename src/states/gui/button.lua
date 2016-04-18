@@ -37,7 +37,8 @@ function Button.new( x, y, image, maskImage, actionFunction )
   
   self.isHover = false
   self.lastHover = 0
-  self.hasSound = true
+  self.hoverSound = sounds.button_mouseover
+  self.sound = sounds.button_pressed
   
   return self
 end
@@ -57,8 +58,13 @@ function Button:setColor( color )
   return self
 end
 
-function Button:noSound()
-  self.hasSound = false
+function Button:setHoverSound( sound )
+  self.hoverSound = sound
+  return self
+end
+
+function Button:setSound( sound )
+  self.sound = sound
   return self
 end
 
@@ -91,6 +97,9 @@ function Button:mousereleased( x, y, button )
     return false
   end
   if self:isOnButton(x,y) then
+    if (self.sound) then
+      self.sound:play()
+    end
     self.actionFunction()
     return true
   end
@@ -105,8 +114,8 @@ function Button:draw()
   
   local image = self.image
   if self:isOnButton(globals.getMousePosition()) then
-    if (self.hasSound and not self.isHover and time()-0.1 > self.lastHover) then
-      sounds.button_hover:play()
+    if (self.hoverSound and not self.isHover and time()-0.1 > self.lastHover) then
+      self.hoverSound:play()
     end
     self.isHover = true
     
