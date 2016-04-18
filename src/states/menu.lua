@@ -28,9 +28,9 @@ function Menu.new()
   local self = setmetatable({}, Menu)
 
   self.buttons = {}
-  self.buttons[1] = Button.new(85,860, images.button_start, images.button_start_mask, startGameCallback)
-  self.buttons[2] = Button.new(85,1180, images.button_help, images.button_help_mask, howToPlayCallback)
-  self.buttons[3] = Button.new(435,1530, images.button_quit, images.button_quit_mask, quitCallback)
+  self.buttons[1] = Button.new(85,860, images.button_start, images.button_start_mask, startGameCallback):setHoverImage(images.button_start_hover)
+  self.buttons[2] = Button.new(85,1180, images.button_help, images.button_help_mask, howToPlayCallback):setHoverImage(images.button_help_hover)
+  self.buttons[3] = Button.new(435,1530, images.button_quit, images.button_quit_mask, quitCallback):setHoverImage(images.button_quit_hover)
   
   self.dice = {
     image=images.fuzzy_dice,

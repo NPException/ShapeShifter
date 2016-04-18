@@ -31,10 +31,13 @@ local images = {
   -- buttons
   button_start = "assets/menu/buttons/btn_startgame.png",
   button_start_mask = "assets/menu/buttons/btn_startgame_mask.png",
+  button_start_hover = "assets/menu/buttons/btn_startgame_hover.png",
   button_quit = "assets/menu/buttons/btn_quit.png",
   button_quit_mask = "assets/menu/buttons/btn_quit_mask.png",
+  button_quit_hover = "assets/menu/buttons/btn_quit_hover.png",
   button_help = "assets/menu/buttons/btn_howtoplay.png",
   button_help_mask = "assets/menu/buttons/btn_howtoplay_mask.png",
+  button_help_hover = "assets/menu/buttons/btn_howtoplay_hover.png",
   button_choose_driver = "assets/menu/buttons/btn_chooseyourdriver.png",
   button_arrow_left = "assets/menu/buttons/btn_arrow_left.png",
   button_arrow_left_mask = "assets/menu/buttons/btn_arrow_left_mask.png",

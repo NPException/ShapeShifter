@@ -36,10 +36,12 @@ end
 
 function Button:setHoverImage( hoverImage )
   self.hoverImage = hoverImage
+  return self
 end
 
 function Button:setHoverColor( hoverColor )
   self.hoverColor = hoverColor
+  return self
 end
 
 function Button:setColor( color )
