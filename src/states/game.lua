@@ -57,6 +57,7 @@ function Game.new(playerChar)
     playerSpeed = 0,
     enemyPos = 20,
     enemySpeed = 0,
+    running = false,
     goal = 0,
     isNeutral = true,
     canShift = true
@@ -88,6 +89,7 @@ function Game:prepareNextRound()
   variables.goal = #seq*70*oneMeter
   variables.canShift = true
   variables.shiftErrors = 0
+  variables.running = false
   
   self.racePanel:setBackCarImage(randomEnemyCarImage(self.playerChar))
   self.racePanel:setGoal(variables.goal)
@@ -99,6 +101,11 @@ end
 
 function Game:neutralGearCallback()
   self.variables.isNeutral = true
+  
+  if (not self.variables.running) then
+    -- TODO: start round here
+    self.variables.running = true
+  end
 end
 
 function Game:correctGearCallback( seqIndex )
@@ -137,19 +144,21 @@ function Game:update(dt)
   local vars = self.variables
   
   -- tween updates
-  if self.enemyTween and self.enemyTween:update(dt) then
-    self.enemyTween = nil
-  end
-  if self.playerTween and self.playerTween:update(dt) then
-    self.playerTween = nil
-  elseif vars.isNeutral then
-    vars.playerSpeed = math.max(0, vars.playerSpeed-0.1*dt)
-  end
-  
   self.flashTween:update(dt)
   
-  vars.enemyPos = vars.enemyPos + vars.enemySpeed*oneMeter*dt
-  vars.playerPos = vars.playerPos + vars.playerSpeed*oneMeter*dt
+  if (self.variables.running) then
+    if self.enemyTween and self.enemyTween:update(dt) then
+      self.enemyTween = nil
+    end
+    if self.playerTween and self.playerTween:update(dt) then
+      self.playerTween = nil
+    elseif vars.isNeutral then
+      vars.playerSpeed = math.max(0, vars.playerSpeed-0.1*dt)
+    end
+    
+    vars.enemyPos = vars.enemyPos + vars.enemySpeed*oneMeter*dt
+    vars.playerPos = vars.playerPos + vars.playerSpeed*oneMeter*dt
+  end
   
   local playerPos = vars.playerPos
   local enemyPos = vars.enemyPos
