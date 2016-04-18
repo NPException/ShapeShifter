@@ -11,13 +11,13 @@ local Fader = require("states.fader")
 local tween = require("lib.tween")
 
 local function startGameCallback()
-  local carselect = function() return require("states.carselect").new() end
+  local carselect = function() return globals.states.carselect end
   Fader.fadeTo( carselect, 0.2, 0.2, {255,255,255} )
 end
 
 local function howToPlayCallback()
-  local htp = require("states.howtoplay").new()
-  Fader.fadeTo( htp, 0.2, 0.2, {255,255,255} )
+  local howtoplay = function() return globals.states.howtoplay end
+  Fader.fadeTo( howtoplay, 0.2, 0.2, {255,255,255} )
 end
 
 local function quitCallback()

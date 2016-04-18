@@ -47,8 +47,15 @@ function love.load( arg )
   lg.setFont(font)
   
   -- load initial game state here
-  local menuState = require("states.menu").new()
-  Fader.fadeTo( menuState, 0, .5, {255,255,255})
+  globals.states = setmetatable({}, {
+    __index = function(table, key)
+      print("Loading state: "..key)
+      local state = require("states."..key).new()
+      rawset(table, key, state)
+      return state
+    end
+  })
+  Fader.fadeTo( globals.states.menu, 0, 0.5, {255,255,255})
 end
 
 

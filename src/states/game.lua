@@ -11,7 +11,7 @@ local Tween = require("lib.tween")
 local RacePanel = require("states.gui.racepanel")
 local Shifter = require("states.gui.shifter")
 
-local characters = require("states.carselect").characters
+local characters = globals.states.carselect.characters
 
 local oneMeter = 70 -- one meter in pixels
 
@@ -134,7 +134,7 @@ function Game:roundEnd( success )
     self:prepareNextRound()
     self:flash({255,255,255})
   else
-    local menu = require("states.menu").new()
+    local menu = globals.states.menu
     globals.state = Fader.create( menu, true, 1, menu, {250,20,0})
   end
 end
@@ -201,8 +201,7 @@ end
 function Game:keypressed( key, scancode, isrepeat )
   if (key == "escape") then
     local Fader = require("states.fader")
-    local Menu = require("states.menu")
-    Fader.fadeTo( Menu.new(), 0.2, 0.4, {255,255,255})
+    Fader.fadeTo( globals.states.menu, 0.2, 0.4, {255,255,255})
   elseif (key == "space") then
     self:roundEnd(true)
   end

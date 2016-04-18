@@ -20,8 +20,7 @@ for i=1,#GLOBALS.config.carsAndCharacters do
 end
 
 local function backToMenu()
-  local menu = require("states.menu").new()
-  Fader.fadeTo( menu, 0.2, 0.4, {255,255,255} )
+  Fader.fadeTo( GLOBALS.states.menu, 0.2, 0.4, {255,255,255} )
 end
 
 function CarSelect.new()
