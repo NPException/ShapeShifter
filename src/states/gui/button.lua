@@ -24,13 +24,26 @@ function Button.new( x, y, image, maskImage, actionFunction )
   self.h = image:getHeight()
   
   self.color = {255,255,255,190}
-  self.colorHover = {255,255,255}
+  self.hoverColor = {255,255,255}
+  self.hoverImage = nil
   
   if (maskImage) then
     self.maskData = maskImage:getData()
   end
   
   return self
+end
+
+function Button:setHoverImage( hoverImage )
+  self.hoverImage = hoverImage
+end
+
+function Button:setHoverColor( hoverColor )
+  self.hoverColor = hoverColor
+end
+
+function Button:setColor( color )
+  self.color = color
 end
 
 function Button:tween( time, target, easing )
@@ -75,12 +88,17 @@ function Button:draw()
     return
   end
   
+  local image = self.image
   if self:isOnButton(globals.getMousePosition()) then
-    lg.setColor(self.colorHover)
+    lg.setColor(self.hoverColor)
+    if (self.hoverImage) then
+      image = self.hoverImage
+    end
   else
     lg.setColor(self.color)
   end
-  lg.draw(self.image, x, y)
+  
+  lg.draw(image, x, y)
 end
 
 return Button
