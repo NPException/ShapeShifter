@@ -120,7 +120,7 @@ function Game:wrongGearCallback( seqIndex )
   local variables = self.variables
   variables.shiftErrors = variables.shiftErrors + 1
   if variables.shiftErrors >= 3 then
-    self:roundEnd( false )
+    self:roundEnd( "clutch" )
   end
 end
 
@@ -129,13 +129,13 @@ function Game:finalGearCallback()
 end
 
 
-function Game:roundEnd( success )
-  if (success) then
+function Game:roundEnd( status )
+  if status == "success" then
     self:prepareNextRound()
     self:flash({255,255,255})
   else
-    local menu = globals.states.menu
-    globals.state = Fader.create( menu, true, 1, menu, {250,20,0})
+    local reasonImage = status == "granny" and images.race_lost_granny or images.race_lost_clutch
+    Fader.fadeTo( require("states.racelost").new(reasonImage, #self.variables.sequence-1), 0, 0.5, {250,20,0} )
   end
 end
 
@@ -175,7 +175,7 @@ function Game:update(dt)
   self.racePanel:update(dt, trackPos, playerPos, enemyPos )
   
   if (playerPos >= vars.goal or enemyPos >= vars.goal) then
-    self:roundEnd(playerPos >= vars.goal)
+    self:roundEnd(playerPos >= vars.goal and "success" or "granny")
   end
 end
 
@@ -203,7 +203,7 @@ function Game:keypressed( key, scancode, isrepeat )
     local Fader = require("states.fader")
     Fader.fadeTo( globals.states.menu, 0.2, 0.4, {255,255,255})
   elseif (key == "space") then
-    self:roundEnd(true)
+    self:roundEnd("success")
   end
 end
 

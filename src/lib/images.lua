@@ -28,6 +28,11 @@ local images = {
   howtoplay_title = "assets/menu/howtoplay_title.png",
   howtoplay_text = "assets/menu/howtoplay_text.png",
   
+    -- lost race
+  race_lost = "assets/menu/race_lost.png",
+  race_lost_granny = "assets/menu/race_lost_grannyshifter.png",
+  race_lost_clutch = "assets/menu/race_lost_wrecked_clutch.png",
+  
   -- buttons
   button_start = "assets/menu/buttons/btn_startgame.png",
   button_start_mask = "assets/menu/buttons/btn_startgame_mask.png",

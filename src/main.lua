@@ -38,13 +38,10 @@ function love.load( arg )
   
   lg.setDefaultFilter("linear","nearest")
   
-  -- load font
-  local font = lg.newImageFont("assets/font/font.png",
-    " abcdefghijklmnopqrstuvwxyz"..
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZ0"..
-    "123456789.,!?-+/():;%&`'*#=[]\""..
-    "äöüÄÖÜ")
-  lg.setFont(font)
+  -- load fonts
+  globals.fonts = {
+    highscore = lg.newFont("assets/font/Raleway-Black.ttf", 200)
+  }
   
   -- load initial game state here
   globals.states = setmetatable({}, {
