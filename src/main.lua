@@ -47,7 +47,7 @@ function love.load( arg )
   
   -- load initial game state here
   local menuState = require("states.menu").new()
-  Fader.fadeTo( menuState, 0, 1.5, {255,255,255})
+  Fader.fadeTo( menuState, 0, .5, {255,255,255})
 end
 
 

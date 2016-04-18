@@ -15,6 +15,7 @@ local floor = math.floor
 ]]--
 function Fader.create( state, fadeIn, duration, target, colors )
   local self = setmetatable({}, Fader)
+  self._isFader = true
   self.state = state
   self.fadeIn = fadeIn
   self.colors = colors or {0,0,0}
@@ -33,10 +34,10 @@ function Fader.fadeTo( targetState, fadeOutTime, fadeInTime, colors )
   end
 end
 
-function Fader:update( dt )
+function Fader:update( dt, isWrapped )
   -- update the wrapped state if it has an update method
   if self.state.update then
-    self.state:update(dt)
+    self.state:update(dt, self.state._isFader)
   end
   
   -- don't update if the duration was set to 0
@@ -53,8 +54,8 @@ function Fader:update( dt )
   if (alpha < 0 or alpha > 255) then
     -- clamp it to the range 0-255
     alpha = alpha < 0 and 0 or alpha > 255 and 255 or alpha
-    -- execute the doneCallback if present
-    if (self.target) then
+    -- execute the doneCallback if present and if we are not wrapped in another fader
+    if (self.target and not isWrapped) then
       if (type(self.target) == "function") then
         self.target()
       else

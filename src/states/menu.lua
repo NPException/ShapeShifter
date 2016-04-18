@@ -19,7 +19,7 @@ local function howToPlayCallback()
 end
 
 local function quitCallback()
-  love.event.quit()
+  globals.state = Fader.create( globals.state, false, 0.3, love.event.quit )
 end
 
 function Menu.new()
