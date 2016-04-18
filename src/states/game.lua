@@ -41,7 +41,7 @@ function Game.new(playerChar)
   self.flashTween:update(10) -- make flash finish
   
   self.playerChar = playerChar
-  self.racePanel = RacePanel.new(characters[playerChar].smallCar, randomEnemyCarImage(playerChar), 1)
+  self.racePanel = RacePanel.new(characters[playerChar].smallCar, randomEnemyCarImage(playerChar))
   self.shifter = Shifter.new(self)
   
   self.shifter:setCallbacks(
@@ -89,7 +89,8 @@ function Game:prepareNextRound()
   variables.canShift = true
   variables.shiftErrors = 0
   
-  self.racePanel:reset(randomEnemyCarImage(self.playerChar), variables.goal)
+  self.racePanel:setBackCarImage(randomEnemyCarImage(self.playerChar))
+  self.racePanel:setGoal(variables.goal)
   
   self.enemyTween = Tween.new(#seq*3/1.5, variables, {enemySpeed=#seq*10}, "inOutSine")
   self.playerTween = nil
@@ -150,19 +151,17 @@ function Game:update(dt)
   vars.enemyPos = vars.enemyPos + vars.enemySpeed*oneMeter*dt
   vars.playerPos = vars.playerPos + vars.playerSpeed*oneMeter*dt
   
-  print(math.floor(vars.playerPos))
-  
   local playerPos = vars.playerPos
   local enemyPos = vars.enemyPos
-  local trackPos = math.min(playerPos, enemyPos) + math.abs(playerPos - enemyPos)/2 - 400
+  local trackPos = math.min(playerPos, enemyPos) + math.abs(playerPos - enemyPos)/2 - 200
   
   if playerPos-500 > trackPos then
     trackPos = playerPos-500
   elseif trackPos > playerPos-10 then
     trackPos = playerPos-10
-  elseif trackPos < 0 then
-    trackPos = 0
   end
+  
+  trackPos = math.max(0,trackPos)
   
   self.racePanel:update(dt, trackPos, playerPos, enemyPos )
   

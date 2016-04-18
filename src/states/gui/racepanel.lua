@@ -5,21 +5,9 @@ local lg = love.graphics
 
 local images = require("lib.images")
 
-function Panel.new(frontCarImage, backCarImage, goal)
+function Panel.new(frontCarImage, backCarImage)
   local self = setmetatable({}, Panel)
   self.frontCarImage = frontCarImage
-  
-  self:reset(backCarImage, goal)
-  
-  self.road_width = images.road:getWidth()
-  self.bollards_bg_width = images.bollards_bg:getWidth()
-  self.bollards_fg_width = images.bollards_fg:getWidth()
-  self.mountains_width = images.mountains:getWidth()
-  
-  return self
-end
-
-function Panel:reset(backCarImage, goal)
   self.backCarImage = backCarImage
   
   self.trackPosition = 0
@@ -31,7 +19,7 @@ function Panel:reset(backCarImage, goal)
   self.bollardBgPosition = 0
   self.bollardFgPosition = 0
   
-  self.goal = goal
+  self.goal = 1
   self.frontIndicator = 0
   self.backIndicator = 0
   
@@ -41,6 +29,13 @@ function Panel:reset(backCarImage, goal)
   self.frontMoving = false
   self.backMoving = false
   self.time = 0
+  
+  self.road_width = images.road:getWidth()
+  self.bollards_bg_width = images.bollards_bg:getWidth()
+  self.bollards_fg_width = images.bollards_fg:getWidth()
+  self.mountains_width = images.mountains:getWidth()
+  
+  return self
 end
 
 function Panel:setBackCarImage( backCarImage )
