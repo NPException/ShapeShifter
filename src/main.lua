@@ -14,6 +14,7 @@ local canvas
 
 -- LOAD --
 function love.load( arg )
+  math.randomseed(os.time())
   lg = love.graphics
   globals.config = require("conf")
   globals.time = 0

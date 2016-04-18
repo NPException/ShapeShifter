@@ -39,7 +39,13 @@ function Game.new(playerChar)
   self.backCarAcceleration = 0
   
   self.shifter = Shifter.new(self)
-  self.shifter:setSequence({3,8,1,9,12})
+  
+  local seq = {}
+  for i=1,20 do
+    seq[#seq+1] = math.random(#symbolImages)
+  end
+  
+  self.shifter:setSequence(seq)
   return self
 end
 
