@@ -246,6 +246,13 @@ function Shifter:moveTo( x, y )
   
   if (not self:isInDistance(snapDistance)) then
     self:changeGear(nil)
+  elseif (self:isInDistance(10)) then
+    for i=1,6 do
+      if (gears[i] == self.nearestGear) then
+        self:changeGear(i)
+        break
+      end
+    end
   end
   
   self.x, self.y = nextX, nextY
