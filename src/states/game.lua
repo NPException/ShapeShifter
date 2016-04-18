@@ -41,7 +41,7 @@ function Game.new(playerChar)
   self.flashTween:update(10) -- make flash finish
   
   self.playerChar = playerChar
-  self.racePanel = RacePanel.new(characters[playerChar].smallCar, randomEnemyCarImage(playerChar))
+  self.racePanel = RacePanel.new(characters[playerChar].smallCar, randomEnemyCarImage(playerChar), 1)
   self.shifter = Shifter.new(self)
   
   self.shifter:setCallbacks(
@@ -89,8 +89,7 @@ function Game:prepareNextRound()
   variables.canShift = true
   variables.shiftErrors = 0
   
-  self.racePanel:setBackCarImage(randomEnemyCarImage(self.playerChar))
-  self.racePanel:setGoal(variables.goal)
+  self.racePanel:reset(randomEnemyCarImage(self.playerChar), variables.goal)
   
   self.enemyTween = Tween.new(#seq*3/1.5, variables, {enemySpeed=#seq*10}, "inOutSine")
   self.playerTween = nil
@@ -125,7 +124,7 @@ end
 function Game:roundEnd( success )
   if (success) then
     self:prepareNextRound()
-    globals.state = Fader.create( globals.state, true, 1, self, {255,255,255})
+    self:flash({255,255,255})
   else
     local menu = require("states.menu").new()
     globals.state = Fader.create( menu, true, 1, menu, {250,20,0})
@@ -150,6 +149,8 @@ function Game:update(dt)
   
   vars.enemyPos = vars.enemyPos + vars.enemySpeed*oneMeter*dt
   vars.playerPos = vars.playerPos + vars.playerSpeed*oneMeter*dt
+  
+  print(math.floor(vars.playerPos))
   
   local playerPos = vars.playerPos
   local enemyPos = vars.enemyPos
@@ -194,6 +195,8 @@ function Game:keypressed( key, scancode, isrepeat )
     local Fader = require("states.fader")
     local Menu = require("states.menu")
     Fader.fadeTo( Menu.new(), 0.2, 0.4, {255,255,255})
+  elseif (key == "space") then
+    self:roundEnd(true)
   end
 end
 

@@ -56,7 +56,7 @@ end
 function love.keypressed( key, scancode, isrepeat )
   if (key == "kp+") then
     globals.debug = not globals.debug
-  elseif (scancode == "`") then
+  elseif (key == "1") then
     debug.debug()
   end
   
