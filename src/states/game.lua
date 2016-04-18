@@ -9,6 +9,7 @@ local images = require("lib.images")
 local RacePanel = require("states.gui.racepanel")
 local Shifter = require("states.gui.shifter")
 
+
 function Game.new()
   local self = setmetatable({}, Game)
   self.racePanel = RacePanel.new(images.car1, images.car2)
@@ -19,6 +20,7 @@ function Game.new()
   self.backCarAcceleration = 0
   
   self.shifter = Shifter.new(self)
+  self.shifter:setSequence({3,8,1,9,12})
   return self
 end
 

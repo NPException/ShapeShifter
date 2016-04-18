@@ -35,6 +35,7 @@ local images = {
   button_arrow_left_mask = "assets/menu/buttons/btn_arrow_left_mask.png",
   button_arrow_right = "assets/menu/buttons/btn_arrow_right.png",
   button_arrow_right_mask = "assets/menu/buttons/btn_arrow_right_mask.png",
+  button_back = "assets/menu/buttons/btn_back.png",
   
   -- cars
   car1 = "assets/inscreen/car1.png",
