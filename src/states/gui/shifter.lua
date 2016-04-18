@@ -79,8 +79,8 @@ end
 
 --[[
   neutralGear: will be called whenever the player enters neutral
-  correctGear: will be called when the player tucks in a right gear
-  wrongGear:   will be called when the player tucks in a wrong gear
+  correctGear: will be called when the player tucks in a right gear (takes the current sequence index as parameter)
+  wrongGear:   will be called when the player tucks in a wrong gear (takes the current sequence index as parameter)
   finalGear:   will be called when the player tucks in the finalGear of the sequence
 ]]--
 function Shifter:setCallbacks(neutralGear, correctGear, wrongGear, finalGear)
@@ -163,15 +163,13 @@ function Shifter:changeGear(nextGear)
         self.knobSymbolColor[2] = 250
         self.knobSymbolColor[3] = 0
         
+        if (self.correctGear) then
+          self.correctGear(self.sequenceIndex)
+        end
+        
         -- check if this was the final gear
-        if (self.sequenceIndex == #self.sequence) then
-          if (self.finalGear) then
-            self.finalGear()
-          end
-        else
-          if (self.correctGear) then
-            self.correctGear()
-          end
+        if (self.sequenceIndex == #self.sequence and self.finalGear) then
+          self.finalGear()
         end
         -- generate layout for next gear in sequence (or none) and make sure that the new active gear is set
         self.activeGear = nextGear
@@ -183,7 +181,7 @@ function Shifter:changeGear(nextGear)
         self.knobSymbolColor[2] = 20
         self.knobSymbolColor[3] = 0
         if (self.wrongGear) then
-          self.wrongGear()
+          self.wrongGear(self.sequenceIndex)
         end
       end
       -- if knobSymbol is nil, then it was the gear from the last shift
@@ -263,11 +261,6 @@ function Shifter:isKnob( x, y )
   local dx = self.x - x
   local dy = (self.y + self.knobOffset) - y
   return self.knobRadiusSqr >= dx*dx + dy*dy
-end
-
-
-function Shifter:update( dt )
-  
 end
 
 

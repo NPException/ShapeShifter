@@ -6,11 +6,14 @@ local config = globals.config
 local lg = love.graphics
 
 local images = require("lib.images")
+local Fader = require("states.fader")
 local Tween = require("lib.tween")
 local RacePanel = require("states.gui.racepanel")
 local Shifter = require("states.gui.shifter")
 
 local characters = require("states.carselect").characters
+
+local oneMeter = 70 -- one meter in pixels
 
 local symbolImages = {}
 for i=1,GLOBALS.config.numberOfSymbols do
@@ -38,8 +41,8 @@ function Game.new(playerChar)
   
   self.shifter:setCallbacks(
     function() selfRef:neutralGearCallback() end,
-    function() selfRef:correctGearCallback() end,
-    function() selfRef:wrongGearCallback() end,
+    function(seqIndex) selfRef:correctGearCallback(seqIndex) end,
+    function(seqIndex) selfRef:wrongGearCallback(seqIndex) end,
     function() selfRef:finalGearCallback() end
   );
   
@@ -48,7 +51,10 @@ function Game.new(playerChar)
     playerPos = 10,
     playerSpeed = 0,
     enemyPos = 20,
-    enemySpeed = 0
+    enemySpeed = 0,
+    goal = 0,
+    isNeutral = true,
+    canShift = true
   }
   
   self:prepareNextRound()
@@ -59,51 +65,83 @@ end
 
 function Game:prepareNextRound()
   local variables = self.variables
-  variables.playerPos = 10
-  variables.playerSpeed = 0
-  variables.enemyPos = 20
-  variables.enemySpeed = 0
   local seq = variables.sequence
   seq[#seq+1] = math.random(#symbolImages)
   self.shifter:setSequence(seq)
   
-  self.enemyTween = Tween.new(#seq*3, variables, {enemySpeed=#seq*100}, "inOutBack")
+  variables.playerPos = 10
+  variables.playerSpeed = 0
+  variables.enemyPos = 20
+  variables.enemySpeed = 0
+  variables.goal = #seq*50*oneMeter
+  variables.canShift = true
+  
+  self.enemyTween = Tween.new(#seq*3, variables, {enemySpeed=#seq*10}, "inOutQuad")
+  self.playerTween = nil
 end
 
 
 function Game:neutralGearCallback()
-  print("Neutral")
+  self.variables.isNeutral = true
 end
 
-function Game:correctGearCallback()
-  print("Correct")
+function Game:correctGearCallback( seqIndex )
+  local variables = self.variables
+  variables.isNeutral = false
+  self.playerTween = Tween.new(1, variables, {playerSpeed=seqIndex*12}, "inOutBack")
 end
 
-function Game:wrongGearCallback()
+function Game:wrongGearCallback( seqIndex )
   print("Wrong")
 end
 
 function Game:finalGearCallback()
-  print("Done")
+  self.variables.canShift = false
+end
+
+
+function Game:roundEnd( success )
+  if (success) then
+    self:prepareNextRound()
+    globals.state = Fader.create( self, true, 1, self, {255,255,255})
+  else
+    local menu = require("states.menu").new()
+    globals.state = Fader.create( menu, true, 1, menu, {250,20,0})
+  end
 end
 
 
 function Game:update(dt)
-  self.shifter:update(dt)
   local vars = self.variables
-  local oneMeter = 70 -- one meter in pixels
   
   -- tween updates
-  self.enemyTween:update(dt)
+  if self.enemyTween then
+    self.enemyTween:update(dt)
+  end
+  if self.playerTween then
+    self.playerTween:update(dt)
+  end
   
   vars.enemyPos = vars.enemyPos + vars.enemySpeed*oneMeter*dt
+  vars.playerPos = vars.playerPos + vars.playerSpeed*oneMeter*dt
   
   local playerPos = vars.playerPos
   local enemyPos = vars.enemyPos
-  local trackPos = math.min(playerPos, enemyPos) + math.abs(playerPos - enemyPos)/2
+  local trackPos = math.min(playerPos, enemyPos) + math.abs(playerPos - enemyPos)/2 - 400
   
+  if playerPos-500 > trackPos then
+    trackPos = playerPos-500
+  elseif trackPos > playerPos-10 then
+    trackPos = playerPos-10
+  elseif trackPos < 0 then
+    trackPos = 0
+  end
   
   self.racePanel:update(dt, trackPos, playerPos, enemyPos )
+  
+  if (playerPos >= vars.goal or enemyPos >= vars.goal) then
+    self:roundEnd(playerPos >= vars.goal)
+  end
 end
 
 
@@ -123,16 +161,12 @@ function Game:keypressed( key, scancode, isrepeat )
     local Fader = require("states.fader")
     local Menu = require("states.menu")
     Fader.fadeTo( Menu.new(), 0.2, 0.4, {255,255,255})
-  elseif (key == "m") then
-    self.frontCarAcceleration = self.frontCarAcceleration + 0.1
-  elseif (key == "n") then
-    self.frontCarAcceleration = 0
   end
 end
 
 
 function Game:mousepressed( x, y, button )
-  if (self.shifter:isKnob( x, y )) then
+  if (self.variables.canShift and self.shifter:isKnob( x, y )) then
     self.shifter:grab(true, x, y)
   end
 end
@@ -144,7 +178,7 @@ end
 
 
 function Game:mousemoved( x, y, dx, dy )
-  if (self.shifter.isGrabbed) then
+  if (self.variables.canShift and self.shifter.isGrabbed) then
     self.shifter:moveTo( x, y )
   end
 end
