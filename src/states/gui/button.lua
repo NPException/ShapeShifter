@@ -3,8 +3,12 @@ Button.__index = Button
 
 local globals = GLOBALS
 local screenW, screenH = globals.config.width, globals.config.height
+local sounds = require("lib.sounds")
+
 local lg = love.graphics
 local Tween = require("lib.tween")
+
+local time = love.timer.getTime
 
 --[[
   x, y: position of the button (top left corner)
@@ -31,6 +35,10 @@ function Button.new( x, y, image, maskImage, actionFunction )
     self.maskData = maskImage:getData()
   end
   
+  self.isHover = false
+  self.lastHover = 0
+  self.hasSound = true
+  
   return self
 end
 
@@ -46,6 +54,12 @@ end
 
 function Button:setColor( color )
   self.color = color
+  return self
+end
+
+function Button:noSound()
+  self.hasSound = false
+  return self
 end
 
 function Button:tween( time, target, easing )
@@ -67,10 +81,9 @@ function Button:isOnButton( x, y )
     local floor = math.floor
     local bx, by = floor(x-self.x), floor(y-self.y)
     local r = self.maskData:getPixel( bx, by )
-    return r==255
-  else
-    return onButton
+    onButton = r==255
   end
+  return onButton
 end
 
 function Button:mousereleased( x, y, button )
@@ -92,11 +105,20 @@ function Button:draw()
   
   local image = self.image
   if self:isOnButton(globals.getMousePosition()) then
+    if (self.hasSound and not self.isHover and time()-0.1 > self.lastHover) then
+      sounds.button_hover:play()
+    end
+    self.isHover = true
+    
     lg.setColor(self.hoverColor)
     if (self.hoverImage) then
       image = self.hoverImage
     end
   else
+    if (self.isHover) then
+      self.lastHover = time()
+    end
+    self.isHover = false
     lg.setColor(self.color)
   end
   

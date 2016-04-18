@@ -40,10 +40,8 @@ function CarSelect.new()
     local charX = character.charX
     local charY = 1750 - character.char:getHeight()
     
-    local carButton = Button.new(carX,carY, character.largeCar, nil, callbackStart)
-    carButton:setColor({255,255,255})
-    local charButton = Button.new(charX,charY, character.char, nil, callbackStart)
-    charButton:setColor({255,255,255})
+    local carButton = Button.new(carX,carY, character.largeCar, nil, callbackStart):setColor({255,255,255}):noSound()
+    local charButton = Button.new(charX,charY, character.char, nil, callbackStart):setColor({255,255,255}):noSound()
       
     if i~=self.currentSelection then
       carButton.x = -1500
