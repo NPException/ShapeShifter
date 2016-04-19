@@ -1,0 +1,38 @@
+* {
+    box-sizing: border-box;
+}
+
+h1 {
+    font-family: arial;
+    color: rgb( 87, 67, 51 );
+}
+
+body {
+    background-image: url(bg.png);
+    background-repeat: no-repeat;
+    font-family: arial;
+    margin: 0;
+    padding: none;
+    background-color: rgb( 204, 193, 182 );
+    color: rgb( 87, 67, 51 );
+}
+
+footer {
+    font-family: arial;
+    font-size: 12px;
+    padding-left: 10px;
+    position:absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Links */
+a {
+    text-decoration: none;
+}
+/* the canvas *must not* have any border or padding, or mouse coords will be wrong */
+#canvas {
+    padding-right: 0;
+    display: none;
+    border: 0px none;
+}

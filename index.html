@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>LD35 Entry: ShapeShifter</title>
+
+    <!-- Load custom style sheet -->
+    <link rel="stylesheet" type="text/css" href="theme/love.css">
+  </head>
+  <body>
+    <center>
+      <div>
+        <h1>LD35 Entry: ShapeShifter</h1>
+		<div style="display:table; max-width: 70%; text-align:left;">
+			<p style="color:red">If the game does not load or the game does not work at all, <b>try it in a private window</b> or another browser.</p>
+			<p>
+				<span style="color:red">There is (at least) one bug in this web version:</span>
+				The engine sounds do not adjust their pitch to the car's speed.
+				If you want to hear the proper sounds, consider
+				<a href="https://github.com/NPException/ShapeShifter/releases/tag/LD">downloading the standalone for your system here</a>.
+			</p>
+		</div>
+        <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+        <canvas id="loadingCanvas" oncontextmenu="event.preventDefault()" width="800" height="600"></canvas>
+      </div>
+    </center>
+
+    <script type='text/javascript'>
+      var loadingContext = document.getElementById('loadingCanvas').getContext('2d');
+      function drawLoadingText(text) {
+        var canvas = loadingContext.canvas;
+
+        loadingContext.fillStyle = "rgb(204, 193, 182)";
+        loadingContext.fillRect(0, 0, canvas.scrollWidth, canvas.scrollHeight);
+
+        loadingContext.font = '2em arial';
+        loadingContext.textAlign = 'center'
+        loadingContext.fillStyle = "rgb( 87, 67, 51 )";
+        loadingContext.fillText(text, canvas.scrollWidth / 2, canvas.scrollHeight / 2);
+
+        loadingContext.fillText("Powered By Emscripten.", canvas.scrollWidth / 2, canvas.scrollHeight / 4);
+        loadingContext.fillText("Powered By LÖVE.", canvas.scrollWidth / 2, canvas.scrollHeight / 4 * 3);
+      }
+
+      window.addEventListener("keydown", function(e) {
+        // space and arrow keys
+        if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+          e.preventDefault();
+        }
+      }, false);
+
+      var Module = {
+        arguments: ['./'],
+        printErr: console.error.bind(console),
+        canvas: (function() {
+          var canvas = document.getElementById('canvas');
+
+          // As a default initial behavior, pop up an alert when webgl context is lost. To make your
+          // application robust, you may want to override this behavior before shipping!
+          // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
+          canvas.addEventListener("webglcontextlost", function(e) { alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);
+
+          return canvas;
+        })(),
+        setStatus: function(text) {
+          if (text) {
+            drawLoadingText(text);
+          } else if (Module.didSyncFS && Module.remainingDependencies === 0) {
+            Module.callMain(Module.arguments);
+            document.getElementById('loadingCanvas').style.display = 'none';
+            document.getElementById('canvas').style.display = 'block';
+          }
+        },
+        didSyncFS: false,
+        totalDependencies: 0,
+        remainingDependencies: 0,
+        monitorRunDependencies: function(left) {
+          this.remainingDependencies = left;
+          this.totalDependencies = Math.max(this.totalDependencies, left);
+          Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
+        }
+      };
+      Module.setStatus('Downloading...');
+      window.onerror = function(event) {
+        // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
+        Module.setStatus('Exception thrown, see JavaScript console');
+        Module.setStatus = function(text) {
+          if (text) Module.printErr('[post-exception status] ' + text);
+        };
+      };
+    </script>
+    <script type="text/javascript" src="game.js"></script>
+    <script async type="text/javascript" src="love.js"></script>
+    <footer>
+      <p>Built with <a href="https://github.com/TannerRogalsky/love.js">love.js</a></p>
+    </footer>
+  </body>
+</html>
