@@ -7,9 +7,12 @@
 local sounds = {
   button_mouseover = {path="assets/sounds/button_mouseover.wav", soundtype="static", volume=0.1, looping=false},
   button_pressed = {path="assets/sounds/button_pressed.wav", soundtype="static", volume=0.1, looping=false},
-  shift_failed = {path="assets/sounds/shift_failed.wav", soundtype="static", volume=0.3, looping=false},
-  shift_succeded = {path="assets/sounds/shift_succeded.wav", soundtype="static", volume=0.2, looping=false},
+  shift_failed = {path="assets/sounds/shift_failed.wav", soundtype="static", volume=0.1, looping=false},
+  shift_succeded = {path="assets/sounds/shift_succeded.wav", soundtype="static", volume=0.1, looping=false},
+  neutral_gear = {path="assets/sounds/gear.wav", soundtype="static", volume=0.02, looping=false},
+  gear = {path="assets/sounds/gear.wav", soundtype="static", volume=0.1, looping=false},
   symbol_presented = {path="assets/sounds/symbol_presented.wav", soundtype="static", volume=0.1, looping=false},
+  
   engine_1 = {path="assets/sounds/engine_1.ogg", soundtype="static", volume=0.1, looping=true},
   engine_2 = {path="assets/sounds/engine_2.ogg", soundtype="static", volume=0.1, looping=true},
 }

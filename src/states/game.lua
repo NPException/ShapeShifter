@@ -120,6 +120,7 @@ end
 
 
 function Game:neutralGearCallback()
+  sounds.neutral_gear:play()
   self.variables.isNeutral = true
   
   if (not self.variables.running) then
@@ -134,6 +135,7 @@ function Game:correctGearCallback( seqIndex )
   variables.shiftErrors = 0
   self.playerTween = Tween.new(1, variables, {playerSpeed=playerSpeed(seqIndex)}, "inOutBack")
   sounds.shift_succeded:play()
+  sounds.gear:play()
 end
 
 function Game:wrongGearCallback( seqIndex )
@@ -143,6 +145,7 @@ function Game:wrongGearCallback( seqIndex )
   if variables.shiftErrors >= 3 then
     self:roundEnd( "clutch" )
   else
+    sounds.gear:play()
     sounds.shift_failed:play()
   end
 end
