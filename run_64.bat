@@ -1,1 +1,0 @@
-love_binaries\win64\love "src"
