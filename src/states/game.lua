@@ -261,8 +261,8 @@ function Game:keypressed( key, scancode, isrepeat )
     self.playerEngine:pause()
     self.enemyEngine:pause()
     Fader.fadeTo( globals.states.menu, 0.2, 0.4, {255,255,255})
-  elseif (key == "space") then
-    self:roundEnd("success")
+  --elseif (key == "space") then
+  --  self:roundEnd("success")
   end
 end
 
